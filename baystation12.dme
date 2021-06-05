@@ -3213,10 +3213,5 @@
 #include "maps\~mapsystem\maps_jobs.dm"
 #include "maps\~mapsystem\maps_unit_testing.dm"
 #include "maps\~unit_tests\unit_testing.dm"
-#include "ModularTegustation\tegu_items\apostle_items.dm"
-#include "ModularTegustation\tegu_mobs\alligator.dm"
-#include "ModularTegustation\tegu_mobs\apostle.dm"
-#include "ModularTegustation\tegu_mobs\apostle_antag.dm"
-#include "ModularTegustation\tegu_mobs\tegu.dm"
 #include "~code\global_init.dm"
 // END_INCLUDE
