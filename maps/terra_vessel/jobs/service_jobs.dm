@@ -61,3 +61,38 @@
 	)
 
 	minimal_access = list()
+
+/datum/job/chef
+	title = "Cook"
+	department = "Service"
+	department_flag = SRV
+	total_positions = 1
+	spawn_positions = 1
+	minimum_character_age = list(SPECIES_HUMAN = 18)
+	supervisors = "the Executive Officer"
+	alt_titles = list(
+		"Chef",
+		"Culinary Specialist"
+		)
+	outfit_type = /decl/hierarchy/outfit/job/terra_vessel/crew/service/cook
+	allowed_branches = list(
+		/datum/mil_branch/civilian,
+		/datum/mil_branch/fleet = /decl/hierarchy/outfit/job/terra_vessel/crew/service/cook/fleet
+	)
+	allowed_ranks = list(
+		/datum/mil_rank/civ/contractor,
+		/datum/mil_rank/fleet/e2,
+		/datum/mil_rank/fleet/e3,
+		/datum/mil_rank/fleet/e4
+	)
+	min_skill = list(   SKILL_COOKING   = SKILL_TRAINED,
+	                    SKILL_BOTANY    = SKILL_BASIC,
+	                    SKILL_CHEMISTRY = SKILL_BASIC)
+
+	access = list(
+		access_hydroponics, access_kitchen,
+		access_bar,
+		access_commissary, access_radio_serv
+	)
+
+	minimal_access = list()

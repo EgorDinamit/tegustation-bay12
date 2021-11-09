@@ -300,7 +300,7 @@
 /area/space)
 "JO" = (
 /obj/structure/table/glass,
-/obj/machinery/photocopier/faxmachine/torch{
+/obj/machinery/photocopier/faxmachine{
 	department = "Ion - Bridge"
 	},
 /obj/effect/floor_decal/corner/blue/mono,

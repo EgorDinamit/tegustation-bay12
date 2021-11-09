@@ -41,3 +41,15 @@
 	uniform = /obj/item/clothing/under/terragov/utility
 	shoes = /obj/item/clothing/shoes/dutyboots
 	id_types = list(/obj/item/card/id/terra_vessel/crew/service/janitor/alien)
+
+/decl/hierarchy/outfit/job/terra_vessel/crew/service/cook
+	name = OUTFIT_JOB_NAME("Cook")
+	uniform = /obj/item/clothing/under/rank/chef
+	shoes = /obj/item/clothing/shoes/black
+	id_types = list(/obj/item/card/id/terra_vessel/crew/service/chef)
+	pda_type = /obj/item/modular_computer/pda
+
+/decl/hierarchy/outfit/job/terra_vessel/crew/service/cook/fleet
+	name = OUTFIT_JOB_NAME("Cook - Fleet")
+	uniform = /obj/item/clothing/under/terragov/utility/fleet/service
+	shoes = /obj/item/clothing/shoes/dutyboots
