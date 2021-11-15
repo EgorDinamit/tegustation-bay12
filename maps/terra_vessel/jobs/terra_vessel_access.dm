@@ -128,9 +128,9 @@
 /datum/access/qm
 	desc = "Deck Chief"
 
-/var/const/access_torch_fax = "ACCESS_TORCH_FAX"
-/datum/access/torch_fax
-	id = access_torch_fax
+/var/const/access_terra_fax = "ACCESS_TORCH_FAX"
+/datum/access/terra_fax
+	id = access_terra_fax
 	desc = "Fax Machines"
 	region = ACCESS_REGION_COMMAND
 

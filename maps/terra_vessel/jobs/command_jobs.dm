@@ -72,7 +72,7 @@
 		access_expedition_shuttle_helm, access_aquila, access_aquila_helm, access_terragov_crew,
 		access_emergency_armory, access_sec_guard, access_gun, access_expedition_shuttle, access_guppy, access_seneng, access_senmed, access_senadv,
 		access_explorer, access_pathfinder, access_pilot, access_commissary, access_petrov, access_petrov_helm, access_petrov_analysis, access_petrov_phoron,
-		access_petrov_toxins, access_petrov_chemistry, access_petrov_security, access_petrov_maint, access_rd, access_petrov_rd, access_torch_fax, access_torch_helm,
+		access_petrov_toxins, access_petrov_chemistry, access_petrov_security, access_petrov_maint, access_rd, access_petrov_rd, access_terra_fax, access_torch_helm,
 		access_radio_comm, access_radio_eng, access_radio_med, access_radio_sec, access_radio_sup, access_radio_serv, access_radio_exp, access_radio_sci
 	)
 
@@ -88,7 +88,7 @@
 		access_expedition_shuttle_helm, access_aquila, access_aquila_helm, access_terragov_crew,
 		access_emergency_armory, access_sec_guard, access_gun, access_expedition_shuttle, access_guppy, access_seneng, access_senmed, access_senadv,
 		access_explorer, access_pathfinder, access_pilot, access_commissary, access_petrov, access_petrov_helm, access_petrov_analysis, access_petrov_phoron,
-		access_petrov_toxins, access_petrov_chemistry, access_petrov_security, access_petrov_maint, access_rd, access_petrov_rd, access_torch_fax, access_torch_helm,
+		access_petrov_toxins, access_petrov_chemistry, access_petrov_security, access_petrov_maint, access_rd, access_petrov_rd, access_terra_fax, access_torch_helm,
 		access_radio_comm, access_radio_eng, access_radio_med, access_radio_sec, access_radio_sup, access_radio_serv, access_radio_exp, access_radio_sci
 	)
 
@@ -135,7 +135,7 @@
 		access_expedition_shuttle, access_guppy, access_hangar, access_petrov, access_petrov_helm, access_guppy_helm,
 		access_petrov_analysis, access_petrov_phoron, access_petrov_toxins, access_petrov_chemistry, access_petrov_rd,
 		access_petrov_security, access_petrov_maint, access_pathfinder, access_explorer, access_eva, access_terragov_crew,
-		access_expedition_shuttle, access_expedition_shuttle_helm, access_maint_tunnels, access_torch_fax, access_radio_comm,
+		access_expedition_shuttle, access_expedition_shuttle_helm, access_maint_tunnels, access_terra_fax, access_radio_comm,
 		access_radio_sci, access_radio_exp
 	)
 
@@ -182,7 +182,7 @@
 		access_teleporter, access_eva, access_bridge, access_heads,
 		access_chapel_office, access_crematorium, access_chemistry, access_virology, access_aquila,
 		access_cmo, access_surgery, access_RC_announce, access_keycard_auth, access_psychiatrist,
-		access_medical_equip, access_terragov_crew, access_senmed, access_hangar, access_torch_fax, access_radio_comm,
+		access_medical_equip, access_terragov_crew, access_senmed, access_hangar, access_terra_fax, access_radio_comm,
 		access_radio_med
 	)
 
@@ -232,7 +232,7 @@
 		access_ai_upload, access_teleporter, access_eva, access_bridge, access_heads,
 		access_tech_storage, access_robotics, access_atmospherics, access_janitor, access_construction,
 		access_network, access_ce, access_RC_announce, access_keycard_auth, access_tcomsat,
-		access_terragov_crew, access_aquila, access_seneng, access_hangar, access_torch_fax, access_torch_helm, access_radio_comm,
+		access_terragov_crew, access_aquila, access_seneng, access_hangar, access_terra_fax, access_torch_helm, access_radio_comm,
 		access_radio_eng
 		)
 
@@ -242,7 +242,7 @@
 		access_ai_upload, access_teleporter, access_eva, access_bridge, access_heads,
 		access_tech_storage, access_atmospherics, access_janitor, access_construction,
 		access_network, access_ce, access_RC_announce, access_keycard_auth, access_tcomsat,
-		access_terragov_crew, access_seneng, access_hangar, access_robotics, access_torch_fax, access_torch_helm, access_radio_comm,
+		access_terragov_crew, access_seneng, access_hangar, access_robotics, access_terra_fax, access_torch_helm, access_radio_comm,
 		access_radio_eng
 	)
 
@@ -293,7 +293,7 @@
 		access_maint_tunnels, access_external_airlocks, access_emergency_storage,
 		access_teleporter, access_eva, access_bridge, access_heads, access_aquila,
 		access_hos, access_RC_announce, access_keycard_auth, access_sec_doors,
-		access_terragov_crew, access_gun, access_emergency_armory, access_hangar, access_torch_fax,
+		access_terragov_crew, access_gun, access_emergency_armory, access_hangar, access_terra_fax,
 		access_radio_comm, access_radio_sec
 	)
 
@@ -328,7 +328,7 @@
 	access = list(
 		access_representative, access_security, access_medical,
 		access_bridge, access_cargo, access_terragov_crew,
-		access_hangar, access_torch_fax, access_radio_comm
+		access_hangar, access_terra_fax, access_radio_comm
 	)
 
 	software_on_spawn = list(/datum/computer_file/program/reports)
@@ -375,7 +375,7 @@
 		access_security, access_medical, access_engine, access_maint_tunnels, access_external_airlocks, access_emergency_storage,
 		access_teleporter, access_eva, access_bridge, access_all_personal_lockers, access_janitor,
 		access_kitchen, access_cargo, access_RC_announce, access_keycard_auth, access_aquila, access_guppy_helm,
-		access_terragov_crew, access_gun, access_expedition_shuttle, access_guppy, access_senadv, access_hangar, access_torch_fax,
+		access_terragov_crew, access_gun, access_expedition_shuttle, access_guppy, access_senadv, access_hangar, access_terra_fax,
 		access_radio_comm, access_radio_eng, access_radio_med, access_radio_sec, access_radio_serv, access_radio_sup, access_radio_exp
 		)
 
@@ -418,7 +418,7 @@
 		access_bridge, access_janitor, access_kitchen, access_cargo, access_mailsorting, access_RC_announce, access_keycard_auth,
 		access_terragov_crew, access_aquila, access_aquila_helm, access_guppy, access_guppy_helm, access_external_airlocks,
 		access_eva, access_hangar, access_cent_creed, access_explorer, access_expedition_shuttle, access_expedition_shuttle_helm, access_teleporter,
-		access_torch_fax, access_torch_helm, access_radio_comm, access_radio_eng, access_radio_exp, access_radio_serv, access_radio_sci, access_radio_sup
+		access_terra_fax, access_torch_helm, access_radio_comm, access_radio_eng, access_radio_exp, access_radio_serv, access_radio_sci, access_radio_sup
 	)
 
 	software_on_spawn = list(/datum/computer_file/program/comm,

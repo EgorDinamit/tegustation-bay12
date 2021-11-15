@@ -148,4 +148,14 @@
 /obj/item/card/id/terra_vessel/crew/research/scientist
 	job_access_type = /datum/job/scientist
 
+// Exploration
+/obj/item/card/id/terra_vessel/crew/pathfinder
+	job_access_type = /datum/job/pathfinder
+	detail_color = COLOR_PURPLE
+	extra_details = list("onegoldstripe")
+
+/obj/item/card/id/terra_vessel/crew/explorer
+	job_access_type = /datum/job/explorer
+	detail_color = COLOR_PURPLE
+
 #undef ALIEN_ID_COLOR
