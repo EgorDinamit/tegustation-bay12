@@ -527,6 +527,11 @@ default behaviour is:
 	if(update_slimes)
 		for(var/mob/living/carbon/slime/M in view(1,src))
 			M.UpdateFeed()
+	update_vision_cone()
+
+/mob/living/set_dir()
+	. = ..()
+	update_vision_cone()
 
 /mob/living/proc/can_pull()
 	if(!moving)
