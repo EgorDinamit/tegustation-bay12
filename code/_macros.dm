@@ -214,3 +214,25 @@ var/const/NEGATIVE_INFINITY = -1#INF // win: -1.#INF, lin: -inf
 #define FONT_GIANT(X) "<font size='5'>[X]</font>"
 
 #define crash_with(X) crash_at(X, __FILE__, __LINE__)
+
+#define isscp106(A) istype(A, /mob/living/carbon/human/scp106)
+
+#define isscp049(A) istype(A, /mob/living/carbon/human/scp049)
+
+#define isscp343(A) istype(A, /mob/living/carbon/human/scp343)
+
+#define isscp049_1(A) (istype(A, /mob/living/carbon/human) && A.scp_049_instance)
+
+#define isscp999(A) istype(A, /mob/living/simple_animal/scp_999)
+
+#define isscp131(A) istype(A, /mob/living/simple_animal/scp_131)
+
+#define isscp529(A) istype(A, /mob/living/simple_animal/cat/fluff/scp_529)
+
+#define isscp173(A) istype(A, /mob/living/scp_173)
+
+#define isstructure(A) istype(A, /obj/structure)
+
+#define ismachinery(A) istype(A, /obj/machinery)
+
+#define isdatum(A) istype(A, /datum)

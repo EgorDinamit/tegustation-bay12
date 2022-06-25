@@ -39,6 +39,8 @@
 	var/temperature_alert = 0
 	var/heartbeat = 0
 	var/stamina = 100
+	var/obj/screen/fov = null//The screen object because I can't figure out how the hell TG does their screen objects so I'm just using legacy code.
+	var/usefov = 1
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
