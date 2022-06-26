@@ -49,7 +49,7 @@
 	#include "site53-5.dmm"
 	#include "z1_admin.dmm"
 	#include "z2_transit.dmm"
-//	#include "away_mission-1.dmm"
+	#include "away_mission-1.dmm"
 
 	#define using_map_DATUM /datum/map/site53
 

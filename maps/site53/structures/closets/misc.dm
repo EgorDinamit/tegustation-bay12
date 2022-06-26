@@ -120,7 +120,7 @@
 	name = "custodial closet"
 	desc = "It's a storage unit for janitorial clothes and gear."
 	icon_state = "mixed"
-//	icon_closed = "mixed"
+	icon_closed = "mixed"
 /obj/structure/closet/djcloset/WillContain()
 	return list(
 		/obj/item/mop,
@@ -139,13 +139,11 @@
 /obj/structure/closet/secure_closet/site53/dmining
 	name = "miner's equipment"
 	icon_state = "miningsec1"
-/*
 	icon_closed = "miningsec"
 	icon_locked = "miningsec1"
 	icon_opened = "miningsecopen"
 	icon_broken = "miningsecbroken"
 	icon_off = "miningsecoff"
-*/
 	req_access = list(access_dclassmining)
 
 /obj/structure/closet/secure_closet/site53/dmining/WillContain()

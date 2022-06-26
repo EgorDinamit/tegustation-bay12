@@ -32,11 +32,12 @@
 	name = "code yellow"
 	icon = 'icons/misc/security_state.dmi'
 
+
 	light_max_bright = 0.5
 	light_inner_range = 1
 	light_outer_range = 2
-	light_color_alarm = COLOR_BLUE
-	light_color_status_display = COLOR_BLUE
+	light_color_alarm = COLOR_VIOLET
+	light_color_status_display = COLOR_VIOLET
 	overlay_alarm = "alarm_yellow"
 	overlay_status_display = "status_display_yellow"
 
@@ -86,9 +87,9 @@
 	name = "code red"
 	icon = 'icons/misc/security_state.dmi'
 
-	light_max_bright = 0.5
+	light_max_bright = 0.75
 	light_inner_range = 1
-	light_outer_range = 2
+	light_outer_range = 3
 	light_color_alarm = COLOR_RED
 	light_color_status_display = COLOR_RED
 	overlay_alarm = "alarm_red"
@@ -109,9 +110,9 @@
 /decl/security_level/default/site53/code_black
 	name = "code black"
 
-	light_max_bright = 0.5
-	light_inner_range = 1
-	light_outer_range = 2
+	light_max_bright = 0.75
+	light_inner_range = 0.1
+	light_outer_range = 3
 	light_color_alarm = COLOR_RED
 	light_color_status_display = COLOR_NAVY_BLUE
 
@@ -133,9 +134,9 @@
 /decl/security_level/default/site53/code_gray
 	name = "code gray"
 
-	light_max_bright = 0.5
-	light_inner_range = 1
-	light_outer_range = 2
+	light_max_bright = 0.75
+	light_inner_range = 0.1
+	light_outer_range = 3
 	light_color_alarm = COLOR_GRAY
 	light_color_status_display = COLOR_GRAY
 

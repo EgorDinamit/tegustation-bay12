@@ -6,12 +6,11 @@
 	name = "research director's locker"
 	req_access = list(access_sciencelvl5)
 	icon_state = "rdsecure1"
-/*
 	icon_closed = "rdsecure"
 	icon_locked = "rdsecure1"
 	icon_opened = "rdsecureopen"
 	icon_off = "rdsecureoff"
-*/
+
 /obj/structure/closet/secure_closet/RD_torch/WillContain()
 	return list(
 		/obj/item/clothing/suit/bio_suit/scientist,
@@ -50,12 +49,11 @@
 	name = "xenoarchaeologist's locker"
 	req_access = list(access_sciencelvl3)
 	icon_state = "secureres1"
-/*
 	icon_closed = "secureres"
 	icon_locked = "secureres1"
 	icon_opened = "secureresopen"
 	icon_off = "secureresoff"
-*/
+
 /obj/structure/closet/secure_closet/secure_closet/xenoarchaeologist_torch/WillContain()
 	return list(
 		/obj/item/clothing/under/rank/scientist,
@@ -84,13 +82,12 @@
 /obj/structure/closet/secure_closet/scientist_torch
 	name = "researcher's locker"
 //	req_one_access = list(access_sciencelvl2)
-/*
 	icon_state = "secureres1"
 	icon_closed = "secureres"
 	icon_locked = "secureres1"
 	icon_opened = "secureresopen"
 	icon_off = "secureresoff"
-*/
+
 /obj/structure/closet/secure_closet/scientist_torch/WillContain()
 	return list(
 		/obj/item/clothing/under/rank/scientist,
@@ -117,13 +114,12 @@
 /obj/structure/closet/secure_closet/prospector
 	name = "prospector's locker"
 	req_access = list(access_sciencelvl2)
-/*
 	icon_state = "miningsec1"
 	icon_closed = "miningsec"
 	icon_locked = "miningsec1"
 	icon_opened = "miningsecopen"
 	icon_off = "miningsecoff"
-*/
+
 /obj/structure/closet/secure_closet/prospector/WillContain()
 	return list(
 		/obj/item/device/radio/headset/torchnanotrasen,
@@ -146,13 +142,12 @@
 /obj/structure/closet/secure_closet/guard
 	name = "security guard's locker"
 	req_access = list(access_securitylvl2)
-/*
 	icon_state = "guard1"
 	icon_closed = "guard"
 	icon_locked = "guard1"
 	icon_opened = "guardopen"
 	icon_off = "guardoff"
-*/
+
 /obj/structure/closet/secure_closet/guard/WillContain()
 	return list(
 		/obj/item/clothing/under/rank/guard,
@@ -192,13 +187,12 @@
 	name = "Research Director's Locker"
 	req_access = list(access_sciencelvl5)
 	icon_state = "dslocked"
-/*
 	icon_closed = "dsunlocked"
 	icon_locked = "dslocked"
 	icon_opened = "dsopen"
 	icon_broken = "dsbroken"
 	icon_off = "dsoff"
-*/
+
 /obj/structure/closet/secure_closet/scpscience/directorofscience/WillContain()
 	return list(
 		/obj/item/storage/backpack/dufflebag,
@@ -215,12 +209,11 @@
 	name = "scientist's locker"
 	req_access = list(access_sciencelvl2)
 	icon_state = "secureres1"
-/*
 	icon_closed = "secureres"
 	icon_locked = "secureres1"
 	icon_opened = "secureresopen"
 	icon_off = "secureresoff"
-*/
+
 /obj/structure/closet/secure_closet/scientist/WillContain()
 	return list(
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/messenger/tox)),
