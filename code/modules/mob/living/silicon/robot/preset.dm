@@ -37,7 +37,7 @@
 	icon_state = "drone-ascent"
 	spawn_sound = 'sound/voice/ascent1.ogg'
 	cell =   /obj/item/cell/mantid
-	laws =   /datum/ai_laws/ascent
+//	laws =   /datum/ai_laws/ascent
 	idcard = /obj/item/card/id/ascent
 	module = /obj/item/robot_module/flying/ascent
 	req_access = list(access_ascent)

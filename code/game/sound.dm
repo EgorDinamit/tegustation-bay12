@@ -1,3 +1,6 @@
+GLOBAL_LIST_INIT(zombie_sound,list('sound/scp/voice/049_1/zombierand1.ogg','sound/scp/voice/049_1/zombierand2.ogg','sound/scp/voice/049_1/zombierand3.ogg',\
+'sound/scp/voice/049_1/zombierand4.ogg','sound/scp/voice/049_1/zombierand5.ogg','sound/scp/voice/049_1/zombierand6.ogg','sound/scp/voice/049_1/zombierand7.ogg'))
+
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0, ignore_walls = TRUE, ignore_pressure = FALSE)
 
 	soundin = get_sfx(soundin) // same sound for everyone

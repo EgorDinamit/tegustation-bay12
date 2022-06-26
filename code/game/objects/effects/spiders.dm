@@ -112,6 +112,10 @@
 				O.implants += spiderling
 		qdel(src)
 
+
+/obj/effect/spider/spiderling/growing
+	growth_chance = 100
+
 /obj/effect/spider/spiderling
 	name = "spiderling"
 	desc = "It never stays still for long."

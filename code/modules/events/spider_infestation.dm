@@ -3,15 +3,20 @@
 /datum/event/spider_infestation
 	announceWhen	= 90
 	var/spawncount = 1
+	var/guaranteed_to_grow = 0
 
 
 /datum/event/spider_infestation/setup()
 	announceWhen = rand(announceWhen, announceWhen + 60)
-	spawncount = rand(3 * severity, 5 * severity)	//spiderlings only have a 50% chance to grow big and strong
+	if (severity <= EVENT_LEVEL_MODERATE)
+		spawncount = 3 * severity
+	else
+		spawncount = 5 * severity
+	guaranteed_to_grow = round(rand(spawncount / 2, spawncount / 3))
 	sent_spiders_to_station = 0
 
 /datum/event/spider_infestation/announce()
-	GLOB.using_map.unidentified_lifesigns_announcement()
+	command_announcement.Announce("Containment breach of object class Euclid SCP-525 detected. Multiple instances detected.", "Biohazard Alert")
 
 /datum/event/spider_infestation/start()
 	var/list/vents = list()
@@ -22,6 +27,10 @@
 
 	while((spawncount >= 1) && vents.len)
 		var/obj/vent = pick(vents)
-		new /obj/effect/spider/spiderling(vent.loc)
+		if (guaranteed_to_grow > 0)
+			new /obj/effect/spider/spiderling/growing(vent.loc)
+			guaranteed_to_grow--
+		else
+			new /obj/effect/spider/spiderling(vent.loc)
 		vents -= vent
 		spawncount--
