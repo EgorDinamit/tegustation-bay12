@@ -62,7 +62,7 @@
 	blend_objects = list(/obj/machinery/door/firedoor, /obj/structure/wall_frame, /turf/unsimulated/wall, /obj/structure/window) // Objects which to blend with
 
 /obj/machinery/door/firedoor/autoset
-	autoset_access = TRUE	//subtype just to make mapping away sites with custom access usage
+	autoset_access = FALSE	//subtype just to make mapping away sites with custom access usage
 	req_access = list()
 
 /obj/machinery/door/firedoor/Initialize()

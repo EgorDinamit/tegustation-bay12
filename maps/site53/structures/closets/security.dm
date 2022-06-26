@@ -137,7 +137,7 @@
 //		/obj/item/storage/box/bloodtypes,
 		/obj/item/gun/projectile/revolver/mateba,
 		/obj/item/ammo_magazine/box/a50,
-		/obj/item/ammo_magazine/c50 = 2,
+
 		/obj/item/gun/projectile/pistol/mk9,
 		/obj/item/ammo_magazine/scp/mk9 = 2,
 		/obj/item/ammo_magazine/box/mk9
@@ -178,7 +178,7 @@
 //		/obj/item/storage/box/bloodtypes,
 		/obj/item/gun/projectile/revolver/mateba,
 		/obj/item/ammo_magazine/box/a50,
-		/obj/item/ammo_magazine/c50 = 4,
+
 		/obj/item/gun/projectile/pistol,
 		/obj/item/ammo_magazine/scp/mk9 = 2
 	)
@@ -230,7 +230,6 @@
 	return list(
 		/obj/item/gun/projectile/shotgun/pump = 3,
 		/obj/item/storage/box/mtf/beanbag = 12,
-		/obj/item/clothing/accessory/storage/bandolier/beanbag = 3
     )
 
 /obj/structure/closet/secure_closet/mtf/riotgear
