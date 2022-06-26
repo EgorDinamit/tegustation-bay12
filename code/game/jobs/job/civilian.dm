@@ -1,23 +1,25 @@
 //Food
+/*
 /datum/job/bartender
 	title = "Bartender"
-	department = "Service"
+	department = "Civilian"
 	department_flag = SRV
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
+	selection_color = "#515151"
 	access = list(access_hydroponics, access_bar, access_kitchen)
 	minimal_access = list(access_bar)
-	alt_titles = list("Barista")
 	outfit_type = /decl/hierarchy/outfit/job/service/bartender
 
 /datum/job/chef
 	title = "Chef"
-	department = "Service"
+	department = "Civilian"
 	department_flag = SRV
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the head of personnel"
+	selection_color = "#515151"
 	access = list(access_hydroponics, access_bar, access_kitchen)
 	minimal_access = list(access_kitchen)
 	alt_titles = list("Cook")
@@ -30,6 +32,7 @@
 	total_positions = 2
 	spawn_positions = 1
 	supervisors = "the head of personnel"
+	selection_color = "#515151"
 	access = list(access_hydroponics, access_bar, access_kitchen)
 	minimal_access = list(access_hydroponics)
 	alt_titles = list("Hydroponicist")
@@ -43,6 +46,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
+	selection_color = "#515151"
 	economic_power = 5
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
@@ -57,6 +61,7 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the quartermaster and the head of personnel"
+	selection_color = "#515151"
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
 	outfit_type = /decl/hierarchy/outfit/job/cargo/cargo_tech
@@ -68,6 +73,7 @@
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the quartermaster and the head of personnel"
+	selection_color = "#515151"
 	economic_power = 5
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_mining, access_mining_station, access_mailsorting)
@@ -81,6 +87,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
+	selection_color = "#515151"
 	access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
 	minimal_access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
 	alt_titles = list("Custodian","Sanitation Technician")
@@ -94,6 +101,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
+	selection_color = "#515151"
 	access = list(access_library, access_maint_tunnels)
 	minimal_access = list(access_library)
 	alt_titles = list("Journalist")
@@ -106,9 +114,10 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "company officials and Corporate Regulations"
+	selection_color = "#515151"
 	economic_power = 7
-	access = list(access_lawyer, access_sec_doors, access_maint_tunnels, access_bridge)
-	minimal_access = list(access_lawyer, access_sec_doors, access_bridge)
+	access = list(access_lawyer, access_sec_doors, access_maint_tunnels, access_heads)
+	minimal_access = list(access_lawyer, access_sec_doors, access_heads)
 	minimal_player_age = 10
 	outfit_type = /decl/hierarchy/outfit/job/internal_affairs_agent
 
@@ -116,3 +125,73 @@
 	. = ..()
 	if(.)
 		H.implant_loyalty(H)
+*/
+
+/datum/job/janitor
+	title = "Janitor"
+	department = "Civilian"
+	department_flag = CIV
+	total_positions = 2
+	spawn_positions = 2
+	supervisors = "the Head of Personnel"
+	ideal_character_age = 24
+	alt_titles = list("Interior caretaker")
+	selection_color = "#515151"
+	outfit_type = /decl/hierarchy/outfit/job/site90/crew/civ/janitor
+	allowed_branches = list(
+		/datum/mil_branch/civilian
+	)
+	allowed_ranks = list(
+	/datum/mil_rank/civ/classd
+	)
+
+	access = list(access_sciencelvl1)
+	minimal_access = list()
+
+/datum/job/chef
+
+	title = "Chef"
+	department = "Civilian"
+	department_flag = CIV
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the Head of Personnel"
+	selection_color = "#515151"
+	ideal_character_age = 24
+	alt_titles = list("Cook")
+	outfit_type = /decl/hierarchy/outfit/job/site90/crew/civ/chef
+	allowed_branches = list(
+		/datum/mil_branch/civilian
+	)
+	allowed_ranks = list(
+	/datum/mil_rank/civ/classd
+	)
+	equip(var/mob/living/carbon/human/H)
+		..()
+
+	access = list(access_sciencelvl1)
+	minimal_access = list()
+
+/datum/job/bartender
+
+	title = "Bartender"
+	department = "Civilian"
+	department_flag = CIV
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the Head of Personnel"
+	selection_color = "#515151"
+	ideal_character_age = 24
+	alt_titles = list("Waiter")
+	outfit_type = /decl/hierarchy/outfit/job/site90/crew/civ/bartender
+	allowed_branches = list(
+		/datum/mil_branch/civilian
+	)
+	allowed_ranks = list(
+	/datum/mil_rank/civ/classd
+	)
+	equip(var/mob/living/carbon/human/H)
+		..()
+
+	access = list(access_sciencelvl1)
+	minimal_access = list()
