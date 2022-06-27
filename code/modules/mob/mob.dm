@@ -1301,3 +1301,4 @@
 
 /mob/keybind_face_direction(direction)
 	facedir(direction)
+

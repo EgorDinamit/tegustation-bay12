@@ -361,6 +361,7 @@
 		return 0
 
 	var/turf/position = get_turf(src)
+	playsound(src, 'sound/effects/radiohiss.ogg', 10)
 
 	//#### Tagging the signal with all appropriate identity values ####//
 
