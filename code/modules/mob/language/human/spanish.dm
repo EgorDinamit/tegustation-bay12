@@ -5,16 +5,16 @@
 *///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /datum/language/human/iberian
-	name = LANGUAGE_HUMAN_IBERIAN
-	desc = "One of the few great common Earth languages to come about naturally, this language developed in the late 21st century during\
-			 a historic period of closeness between Spain, Portugal and their former colonies."
+	name = LANGUAGE_HUMAN_SPANISH
+	desc = "An indo-european language spoken primarly in the Americas and Spain.\
+			 It evolved from the colloquial Latin of the Iberian Peninsula and is the official Language in 20 countries."
 	colour = "iberian"
 	key = "5"
-	shorthand = "Iber"
+	shorthand = "Spain"
 	partial_understanding = list(
-		LANGUAGE_HUMAN_EURO = 30,
+		LANGUAGE_HUMAN_GERMAN = 30,
 		LANGUAGE_HUMAN_SELENIAN = 15,
-		LANGUAGE_SPACER = 20
+		LANGUAGE_ENGLISH = 20
 	)
 	syllables = list(
 		"ad", "al", "an", "ar", "as", "ci", "co", "de", "do", "el", "en", "er", "es",

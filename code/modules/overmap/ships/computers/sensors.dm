@@ -8,12 +8,12 @@
 	machine_name = "sensors console"
 	machine_desc = "Used to activate, monitor, and configure a spaceship's sensors. Higher range means higher temperature; dangerously high temperatures may fry the delicate equipment."
 	var/obj/machinery/shipsensors/sensors
-	var/print_language = LANGUAGE_HUMAN_EURO
+	var/print_language = LANGUAGE_HUMAN_GERMAN
 
 /obj/machinery/computer/ship/sensors/spacer
 	construct_state = /decl/machine_construction/default/panel_closed/computer/no_deconstruct
 	base_type = /obj/machinery/computer/ship/sensors
-	print_language = LANGUAGE_SPACER
+	print_language = LANGUAGE_ENGLISH
 
 /obj/machinery/computer/ship/sensors/attempt_hook_up(obj/effect/overmap/visitable/ship/sector)
 	if(!(. = ..()))

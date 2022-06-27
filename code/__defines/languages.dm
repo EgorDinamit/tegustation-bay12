@@ -1,15 +1,16 @@
-#define LANGUAGE_HUMAN_EURO      "German"
+//Human
+#define LANGUAGE_HUMAN_GERMAN      "German"
 #define LANGUAGE_HUMAN_CHINESE   "Mandarin"
 #define LANGUAGE_HUMAN_ARABIC    "Arabic"
 #define LANGUAGE_HUMAN_INDIAN    "Hindustani"
-#define LANGUAGE_HUMAN_IBERIAN   "Spanish"
+#define LANGUAGE_HUMAN_SPANISH   "Spanish"
 #define LANGUAGE_HUMAN_RUSSIAN   "Russian"
 #define LANGUAGE_HUMAN_SELENIAN  "Selenian"
+#define LANGUAGE_HUMAN_FRENCH	 "French"
 
 //Human misc
 #define LANGUAGE_GUTTER         "Gutter"
 #define LANGUAGE_ENGLISH         "English"
-#define LANGUAGE_SPACER         "Spacer"
 
 //Alien
 #define LANGUAGE_EAL               "Encoded Audio Language"

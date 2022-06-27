@@ -6,14 +6,14 @@
 	key = "t"
 	space_chance = 70
 	partial_understanding = list(
-		LANGUAGE_HUMAN_EURO = 75,
+		LANGUAGE_HUMAN_GERMAN = 75,
 		LANGUAGE_HUMAN_CHINESE = 20,
 		LANGUAGE_HUMAN_ARABIC = 10,
 		LANGUAGE_HUMAN_INDIAN = 10,
-		LANGUAGE_HUMAN_IBERIAN = 30,
+		LANGUAGE_HUMAN_SPANISH = 30,
 		LANGUAGE_HUMAN_RUSSIAN = 30,
 		LANGUAGE_HUMAN_SELENIAN = 15,
-		LANGUAGE_SPACER = 35,
+		LANGUAGE_ENGLISH = 35,
 	)
 	syllables = list (
 		"yayo", "aiya", "chiksa", "tikat", "bazar","oi", "yo", "meit", "grok", "ken", "berk", "cohon", "pendeo"

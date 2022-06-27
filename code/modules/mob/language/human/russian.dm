@@ -1,13 +1,13 @@
 /datum/language/human/russian
 	name = LANGUAGE_HUMAN_RUSSIAN
-	desc = "The official language of the Independent Colonial Confederation of Gilgamesh, originally established in 2122 by the short-lived United Slavic Confederation on Earth."
+	desc = "The most spoken Slavic language, it is commonly heard in not only eastern Europe, but also Central Asia, the Caucasus and partially the Baltic States."
 	colour = "russian"
 	key = "r"
-	shorthand = "Slav"
+	shorthand = "Russ"
 	partial_understanding = list(
-		LANGUAGE_HUMAN_EURO = 5,
+		LANGUAGE_HUMAN_GERMAN = 5,
 		LANGUAGE_HUMAN_SELENIAN = 10,
-		LANGUAGE_SPACER = 20
+		LANGUAGE_ENGLISH = 20
 	)
 	syllables = list(
 		"rus", "zem", "ave", "groz", "ski", "ska", "ven", "konst", "pol", "lin", "svy",

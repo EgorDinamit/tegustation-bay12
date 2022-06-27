@@ -130,7 +130,7 @@
 	distance = "22 light years"
 	economic_power = 1.2
 	ruling_body = "Terran Government"
-	secondary_langs = list(LANGUAGE_SPACER)
+	secondary_langs = list(LANGUAGE_ENGLISH)
 
 /decl/cultural_info/location/human/new_earth
 	name = HOME_SYSTEM_NEW_EARTH
@@ -142,7 +142,7 @@
 	distance = "25 light years"
 	economic_power = 1.1
 	ruling_body = "Terran Government"
-	secondary_langs = list(LANGUAGE_SPACER)
+	secondary_langs = list(LANGUAGE_ENGLISH)
 
 /decl/cultural_info/location/human/tersten
 	name = HOME_SYSTEM_TERSTEN

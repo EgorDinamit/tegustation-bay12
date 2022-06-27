@@ -5,17 +5,18 @@
 
 /datum/language/human/chinese
 	name = LANGUAGE_HUMAN_CHINESE
-	desc = "A simplified version of Mandarin written in the Latin script, Yangyu steadily rose to prominence as a trade language in the continent, Japan, Korea, as well as parts of Africa."
+	desc = "'Standard Mandarine Chinese', mostly just known as Mandarin, is the official language of mainland China and Taiwan.\
+			 It is based on the Beijing dialect of Mandarin and is the lingua franca of a variety of chinese speakers."
 	colour = "chinese"
 	key = "2"
-	shorthand = "YngYu"
+	shorthand = "Mand"
 	space_chance = 30
 	partial_understanding = list(
-		LANGUAGE_HUMAN_EURO = 5,
+		LANGUAGE_HUMAN_GERMAN = 5,
 		LANGUAGE_HUMAN_ARABIC = 5,
 		LANGUAGE_HUMAN_INDIAN = 5,
 		LANGUAGE_HUMAN_SELENIAN = 10,
-		LANGUAGE_SPACER = 20
+		LANGUAGE_ENGLISH = 20
 	)
 	syllables = list(
 		"a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng", "bi", "bian", "biao",

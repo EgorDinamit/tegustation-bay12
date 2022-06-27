@@ -10,8 +10,8 @@
 		LANGUAGE_UNATHI_SINTA,
 		LANGUAGE_UNATHI_YEOSA,
 		LANGUAGE_SIGN,
-		LANGUAGE_HUMAN_EURO,
-		LANGUAGE_SPACER
+		LANGUAGE_HUMAN_GERMAN,
+		LANGUAGE_ENGLISH
 	)
 
 /decl/cultural_info/location/ouere
@@ -22,13 +22,13 @@ no clear consensus on how to treat this new world - either as a logical extensio
 or simply as a resource base for improving the home planet. Many colonists, artifact hunters, and ostracised groups have \
 flocked to the planet, with Markesheli communities growing quite rapidly in numbers compared to other parts of Moghes. "
 	ruling_body = "Clan Hegemony"
-	distance = "20 light-years"	
+	distance = "20 light-years"
 	secondary_langs = list(
 		LANGUAGE_UNATHI_SINTA,
 		LANGUAGE_UNATHI_YEOSA,
 		LANGUAGE_SIGN,
-		LANGUAGE_HUMAN_EURO,
-		LANGUAGE_SPACER
+		LANGUAGE_HUMAN_GERMAN,
+		LANGUAGE_ENGLISH
 	)
 
 /decl/cultural_info/location/offworld
@@ -42,13 +42,13 @@ flocked to the planet, with Markesheli communities growing quite rapidly in numb
 		LANGUAGE_UNATHI_SINTA,
 		LANGUAGE_UNATHI_YEOSA,
 		LANGUAGE_SIGN,
-		LANGUAGE_HUMAN_EURO,
+		LANGUAGE_HUMAN_GERMAN,
 		LANGUAGE_HUMAN_CHINESE,
 		LANGUAGE_HUMAN_ARABIC,
 		LANGUAGE_HUMAN_INDIAN,
-		LANGUAGE_HUMAN_IBERIAN,
+		LANGUAGE_HUMAN_SPANISH,
 		LANGUAGE_HUMAN_RUSSIAN,
-		LANGUAGE_SPACER
+		LANGUAGE_ENGLISH
 	)
 
 /decl/cultural_info/location/tersten
@@ -63,11 +63,11 @@ flocked to the planet, with Markesheli communities growing quite rapidly in numb
 		LANGUAGE_UNATHI_SINTA,
 		LANGUAGE_UNATHI_YEOSA,
 		LANGUAGE_SIGN,
-		LANGUAGE_HUMAN_EURO,
+		LANGUAGE_HUMAN_GERMAN,
 		LANGUAGE_HUMAN_CHINESE,
 		LANGUAGE_HUMAN_ARABIC,
 		LANGUAGE_HUMAN_INDIAN,
-		LANGUAGE_HUMAN_IBERIAN,
+		LANGUAGE_HUMAN_SPANISH,
 		LANGUAGE_HUMAN_RUSSIAN,
-		LANGUAGE_SPACER
+		LANGUAGE_ENGLISH
 	)

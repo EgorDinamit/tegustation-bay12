@@ -1,17 +1,16 @@
 /datum/language/human/arabic
 	name = LANGUAGE_HUMAN_ARABIC
-	desc = "'Prototype Standard Arabic', as it was known during its development as a world-wide replacement for the myriad regional dialects of Modern Standard, \
-			 was mostly ignored on Earth until co-operative Pan-Arab space exploration made its use attractive. Its use as a liturgical language remains limited."
+	desc = "The lingua franca of the Arab world and liturgical language of Islam, named after the Arabs, a term first used for those living in the Arabian Peninsula."
 	colour = "arabic"
 	key = "4"
-	shorthand = "PSA"
+	shorthand = "Arab"
 	space_chance = 35
 	partial_understanding = list(
-		LANGUAGE_HUMAN_EURO = 5,
+		LANGUAGE_HUMAN_GERMAN = 5,
 		LANGUAGE_HUMAN_CHINESE = 5,
 		LANGUAGE_HUMAN_INDIAN = 10,
 		LANGUAGE_HUMAN_SELENIAN = 5,
-		LANGUAGE_SPACER = 20
+		LANGUAGE_ENGLISH = 20
 	)
 	syllables = list(
 		"af", "if", "ba", "ta", "tha", "id", "jem", "ha", "kha", "dal", "dhl", "ra", "zay",

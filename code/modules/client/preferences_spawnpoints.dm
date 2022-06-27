@@ -60,7 +60,7 @@ GLOBAL_VAR(spawntypes)
 /datum/spawnpoint/cryo
 	display_name = "Cryogenic Storage"
 	msg = "has completed cryogenic revival"
-	disallow_job = list("Robot")
+	disallow_job = list("Robot", "Class D")
 
 /datum/spawnpoint/cryo/New()
 	..()

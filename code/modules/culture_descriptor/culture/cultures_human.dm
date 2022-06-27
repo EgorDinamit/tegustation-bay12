@@ -6,13 +6,13 @@
 	name = CULTURE_HUMAN
 	description = "You are from one of various planetary cultures of humankind."
 	secondary_langs = list(
-		LANGUAGE_HUMAN_EURO,
+		LANGUAGE_HUMAN_GERMAN,
 		LANGUAGE_HUMAN_CHINESE,
 		LANGUAGE_HUMAN_ARABIC,
 		LANGUAGE_HUMAN_INDIAN,
-		LANGUAGE_HUMAN_IBERIAN,
+		LANGUAGE_HUMAN_SPANISH,
 		LANGUAGE_HUMAN_RUSSIAN,
-		LANGUAGE_SPACER,
+		LANGUAGE_ENGLISH,
 		LANGUAGE_SIGN
 	)
 
@@ -84,13 +84,13 @@
 	the planet has led to the people of Pluto having something of a seedy reputation, its citizens being viewed with disrepute. The people themselves, however, are usually \
 	just happy to get off the rock and to healthier locales. Unfortunately, despite the efforts of the wider SCG, many Plutonians tend to maintain criminal ties, even offworld."
 	economic_power = 0.8
-	secondary_langs = list (LANGUAGE_HUMAN_EURO,
+	secondary_langs = list (LANGUAGE_HUMAN_GERMAN,
 		LANGUAGE_HUMAN_CHINESE,
 		LANGUAGE_HUMAN_ARABIC,
 		LANGUAGE_HUMAN_INDIAN,
-		LANGUAGE_HUMAN_IBERIAN,
+		LANGUAGE_HUMAN_SPANISH,
 		LANGUAGE_HUMAN_RUSSIAN,
-		LANGUAGE_SPACER,
+		LANGUAGE_ENGLISH,
 		LANGUAGE_GUTTER,
 		LANGUAGE_SIGN)
 
@@ -119,7 +119,7 @@
 	places, meeting a myriad of people and experiencing many of the cultures and worlds close to humanity's home. As such, Spacers of the core systems tend to be busy, sociable and \
 	mobile, rarely satisfied with settled life. They almost universally know how to live and work in the void and take to such jobs more readily than their planet-bound counterparts."
 	economic_power = 1
-	language = LANGUAGE_SPACER
+	language = LANGUAGE_ENGLISH
 
 /decl/cultural_info/culture/human/spacer_frontier
 	name = CULTURE_HUMAN_SPAFRO
@@ -128,7 +128,7 @@
 	vital goods, a lonely outpost on the edge of a dreary backwater, such people are raised in small, confined environments with few others, and tend to be most familiar with older, reliable but outdated \
 	technology. An independent sort, people on the frontier are more likely to be isolationist and self-driven."
 	economic_power = 0.9
-	language = LANGUAGE_SPACER
+	language = LANGUAGE_ENGLISH
 
 /decl/cultural_info/culture/human/terran
 	name = CULTURE_HUMAN_TERRAN
@@ -145,13 +145,13 @@
 	name = CULTURE_HUMAN_OTHER
 	description = "Some people are from places no one has ever heard of or places too wild and fantastical to make it into Encyclopedia Galactica. You are one of these. "
 	economic_power = 1
-	secondary_langs = list (LANGUAGE_HUMAN_EURO,
+	secondary_langs = list (LANGUAGE_HUMAN_GERMAN,
 		LANGUAGE_HUMAN_CHINESE,
 		LANGUAGE_HUMAN_ARABIC,
 		LANGUAGE_HUMAN_INDIAN,
-		LANGUAGE_HUMAN_IBERIAN,
+		LANGUAGE_HUMAN_SPANISH,
 		LANGUAGE_HUMAN_RUSSIAN,
-		LANGUAGE_SPACER,
+		LANGUAGE_ENGLISH,
 		LANGUAGE_GUTTER,
 		LANGUAGE_SIGN)
 

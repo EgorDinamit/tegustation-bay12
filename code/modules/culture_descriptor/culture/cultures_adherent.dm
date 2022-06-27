@@ -8,8 +8,8 @@
 	hidden_from_codex = TRUE
 	language = LANGUAGE_ADHERENT
 	secondary_langs = list(
-		LANGUAGE_HUMAN_EURO,
-		LANGUAGE_SPACER
+		LANGUAGE_HUMAN_GERMAN,
+		LANGUAGE_ENGLISH
 	)
 
 /decl/cultural_info/culture/adherent/get_random_name(var/gender)

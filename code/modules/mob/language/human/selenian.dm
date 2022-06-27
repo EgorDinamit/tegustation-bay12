@@ -6,13 +6,13 @@
 	shorthand = "Sel"
 	space_chance = 100
 	partial_understanding = list(
-		LANGUAGE_HUMAN_EURO = 85,
+		LANGUAGE_HUMAN_GERMAN = 85,
 		LANGUAGE_HUMAN_CHINESE = 15,
 		LANGUAGE_HUMAN_ARABIC = 5,
 		LANGUAGE_HUMAN_INDIAN = 25,
-		LANGUAGE_HUMAN_IBERIAN = 15,
+		LANGUAGE_HUMAN_SPANISH = 15,
 		LANGUAGE_HUMAN_RUSSIAN = 5,
-		LANGUAGE_SPACER = 20
+		LANGUAGE_ENGLISH = 20
 	)
 	syllables = list(
 		"al", "an", "ar", "as", "at", "ed", "er", "ha", "he", "hi", "is", "le", "me", "on", "se", "ti",
