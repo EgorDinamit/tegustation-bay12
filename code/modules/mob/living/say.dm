@@ -54,6 +54,13 @@ var/list/department_radio_keys = list(
 	  ":ö" = "whisper",		".ö" = "whisper",
 	  ":å" = "Mercenary",	".å" = "Mercenary",
 	  ":é" = "Supply",		".é" = "Supply",
+
+	  ":x" = "LCZ-Security",		".x" = "LCZ-Security",
+	  ":k" = "HCZ-Security",		".k" = "HCZ-Security",
+	  ":z" = "ECZ-Security",		".z" = "ECZ-Security",
+	  ":X" = "LCZ-Security",		".X" = "LCZ-Security",
+	  ":K" = "HCZ-Security",		".K" = "HCZ-Security",
+	  ":Z" = "ECZ-Security",		".Z" = "ECZ-Security",
 )
 
 
