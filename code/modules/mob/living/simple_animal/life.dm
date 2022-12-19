@@ -2,8 +2,6 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	if(!living_observers_present(GetConnectedZlevels(z)))
-		return
 	//Health
 	if(stat == DEAD)
 		if(health > 0)
@@ -13,15 +11,10 @@
 			set_density(1)
 		return 0
 
-	handle_atmos()
-
-	if(health <= 0)
-		death()
-		return
-
 	if(health > maxHealth)
 		health = maxHealth
 
+	handle_atmos()
 	handle_stunned()
 	handle_weakened()
 	handle_paralysed()
@@ -33,6 +26,9 @@
 
 	if(can_bleed && bleed_ticks > 0)
 		handle_bleeding()
+
+	if(stat == DEAD)
+		return 1
 
 	if(buckled && can_escape)
 		if(istype(buckled, /obj/effect/energy_net))

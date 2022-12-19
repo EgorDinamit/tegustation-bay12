@@ -8,7 +8,6 @@
 	turns_per_move = 2
 	move_to_delay = 2
 	attack_same = 1
-	speed = 1
 	mob_size = MOB_LARGE
 
 	pixel_x = -16
@@ -29,8 +28,7 @@
 /obj/item/natural_weapon/bite/pike
 	force = 25
 
-// /mob/living/simple_animal/hostile/carp/pike/carp_randomify()
-// 	return
-
-/mob/living/simple_animal/hostile/carp/pike/on_update_icon()
+/mob/living/simple_animal/hostile/carp/pike/carp_randomify()
+	maxHealth = rand(initial(maxHealth), (1.5 * initial(maxHealth)))
+	health = maxHealth
 	return

@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/bad_modes = list()     //Holds modes we tried to start and failed to.
 	var/revotes_allowed = 0         //How many times a game mode revote might be attempted before giving up.
 
+	var/list/round_start_events
+
 	var/end_game_state = END_GAME_NOT_OVER
 	var/delay_end = 0               //Can be set true to postpone restart.
 	var/delay_notified = 0          //Spam prevention.
@@ -28,6 +30,9 @@ SUBSYSTEM_DEF(ticker)
 	var/looking_for_antags = 0
 
 	var/secret_force_mode = "secret"
+
+	///Set to TRUE when an admin forcibly ends round.
+	var/forced_end = FALSE
 
 /datum/controller/subsystem/ticker/Initialize()
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
@@ -92,7 +97,10 @@ SUBSYSTEM_DEF(ticker)
 			if(job && job.create_record)
 				CreateModularRecord(H)
 
-	callHook("roundstart")
+	for(var/I in round_start_events)
+		var/datum/callback/cb = I
+		cb.InvokeAsync()
+	LAZYCLEARLIST(round_start_events)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup() // Drafts antags who don't override jobs.
@@ -104,6 +112,15 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
+
+/datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
+	if(!HasRoundStarted())
+		LAZYADD(round_start_events, cb)
+	else
+		cb.InvokeAsync()
+
+/datum/controller/subsystem/ticker/proc/HasRoundStarted()
+	return GAME_STATE >= RUNLEVEL_GAME
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
@@ -225,7 +242,7 @@ Helpers
 
 	//Find the relevant datum, resolving secret in the process.
 	var/list/base_runnable_modes = config.get_runnable_modes() //format: list(config_tag = weight)
-	if((mode_to_try=="random") || (mode_to_try=="secret"))
+	if(mode_to_try == "secret")
 		var/list/runnable_modes = base_runnable_modes - bad_modes
 		if(secret_force_mode != "secret") // Config option to force secret to be a specific mode.
 			mode_datum = config.pick_mode(secret_force_mode)
@@ -248,7 +265,8 @@ Helpers
 	mode_datum.pre_setup() // Makes lists of viable candidates; performs candidate draft for job-override roles; stores the draft result both internally and on the draftee.
 	SSjobs.divide_occupations(mode_datum) // Gives out jobs to everyone who was not selected to antag.
 
-	if(mode_datum.startRequirements())
+	var/list/lobby_players = SSticker.lobby_players()
+	if(mode_datum.check_startable(lobby_players))
 		mode_datum.fail_setup()
 		SSjobs.reset_occupations()
 		bad_modes += mode_datum.config_tag
@@ -283,6 +301,26 @@ Helpers
 			else
 				if(player.create_character())
 					qdel(player)
+
+/datum/controller/subsystem/ticker/proc/lobby_players(list/players)
+	if(!players)
+		players = GLOB.player_list
+	var/list/lobby_players = list()
+	for(var/mob/new_player/player in players)
+		if(!player.client)
+			continue
+		lobby_players += player
+	return lobby_players
+
+/datum/controller/subsystem/ticker/proc/ready_players(list/players)
+	if(!players)
+		players = lobby_players()
+	var/list/ready_players = list()
+	for(var/mob/new_player/player as anything in players)
+		if(!player.ready)
+			continue
+		ready_players += player
+	return ready_players
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
 	for(var/mob/living/player in GLOB.player_list)
@@ -347,6 +385,9 @@ Helpers
 	return 0
 
 /datum/controller/subsystem/ticker/proc/game_finished()
+	if (forced_end)
+		return TRUE
+
 	if(mode.explosion_in_progress)
 		return 0
 	if(config.continous_rounds)
@@ -355,6 +396,9 @@ Helpers
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 
 /datum/controller/subsystem/ticker/proc/mode_finished()
+	if (forced_end)
+		return TRUE
+
 	if(config.continous_rounds)
 		return mode.check_finished()
 	else

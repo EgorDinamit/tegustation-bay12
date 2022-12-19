@@ -110,7 +110,6 @@
 	#include "language/human/misc/spacer.dm"
 
 	#include "machinery/apc_shuttle.dm"
-	#include "machinery/faxmachine.dm"
 	#include "machinery/keycard authentication.dm"
 	#include "machinery/suit_storage.dm"
 
@@ -163,6 +162,7 @@
 	#include "../away/blueriver/blueriver.dm"
 	#include "../away/slavers/slavers_base.dm"
 	#include "../away/mobius_rift/mobius_rift.dm"
+	#include "../away/obs_shuttle/obs_shuttle.dm"
 	#include "../away/errant_pisces/errant_pisces.dm"
 	#include "../away/lar_maria/lar_maria.dm"
 	#include "../away/voxship/voxship.dm"
@@ -172,7 +172,8 @@
 	#include "../away/mininghome/mininghome.dm"
 	#include "../away/scavver/scavver_gantry.dm"
 	#include "../away/verne/verne.dm"
-//	#include "../away/ascent_caulship/_ascent_caulship.dm"
+	#include "../away/rawl/rawl.dm"
+	#include "../away/ascent_caulship/_ascent_caulship.dm"
 
 	#define using_map_DATUM /datum/map/torch
 

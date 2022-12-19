@@ -19,6 +19,7 @@
 	var/p_open = 0
 	var/operating = 0
 	var/autoclose = 0
+	var/animation_time = 10 // Time it takes for door to fully close/open
 	var/glass = 0
 	var/normalspeed = 1
 	var/heat_proof = 0 // For glass airlocks/opacity firedoors
@@ -214,7 +215,7 @@
 // This is legacy code that should be revisited, probably by moving the bulk of the logic into here.
 /obj/machinery/door/interface_interact(user)
 	if(CanInteract(user, DefaultTopicState()))
-		return attackby(user, user)
+		return attackby(user = user)
 
 /obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
 	src.add_fingerprint(user, 0, I)
@@ -243,7 +244,7 @@
 		else
 			repairing = stack.split(amount_needed)
 			if (repairing)
-				repairing.dropInto(src)
+				repairing.forceMove(src)
 				transfer = repairing.amount
 
 		if (transfer)
@@ -307,6 +308,8 @@
 		return 1
 
 /obj/machinery/door/proc/check_force(obj/item/I, mob/user)
+	if (!istype(I))
+		return FALSE
 	if (!density || user.a_intent != I_HURT)
 		return FALSE
 	if (I.damtype != BRUTE && I.damtype != BURN)
@@ -347,7 +350,7 @@
 	else if(src.health < src.maxhealth * 3/4)
 		to_chat(user, "\The [src] shows signs of damage!")
 
-	if (emagged && ishuman(user) && user.skill_check(SKILL_COMPUTER, SKILL_ADEPT))
+	if (emagged && ishuman(user) && user.skill_check(SKILL_COMPUTER, SKILL_TRAINED))
 		to_chat(user, SPAN_WARNING("\The [src]'s control panel looks fried."))
 
 
@@ -427,10 +430,10 @@
 	do_animate("opening")
 	icon_state = "door0"
 	set_opacity(0)
-	sleep(3)
+	sleep(animation_time*0.3)
 	src.set_density(0)
 	update_nearby_tiles()
-	sleep(7)
+	sleep(animation_time*0.7)
 	src.layer = open_layer
 	update_icon()
 	set_opacity(0)
@@ -452,11 +455,11 @@
 
 	close_door_at = 0
 	do_animate("closing")
-	sleep(3)
+	sleep(animation_time*0.3)
 	src.set_density(1)
 	src.layer = closed_layer
 	update_nearby_tiles()
-	sleep(7)
+	sleep(animation_time*0.7)
 	update_icon()
 	if(visible && !glass)
 		set_opacity(1)	//caaaaarn!

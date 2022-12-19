@@ -37,6 +37,7 @@
 				else
 					A.ex_act(1)
 
+	playsound(start, 'sound/machines/disperser_fire.ogg', 200, 1, 4, ignore_pressure = TRUE) // Big loud sound
 	var/list/relevant_z = GetConnectedZlevels(start.z)
 	for(var/mob/M in GLOB.player_list)
 		var/turf/T = get_turf(M)
@@ -64,7 +65,6 @@
 
 	if(front) //Meanwhile front might have exploded
 		front.layer = ABOVE_OBJ_LAYER //So the beam goes below us. Looks a lot better
-	playsound(start, 'sound/machines/disperser_fire.ogg', 100, 1)
 	handle_beam(start, direction)
 	handle_overbeam()
 
@@ -74,7 +74,7 @@
 	//Some moron disregarded the cooldown warning. Let's blow in their face.
 	if(prob(cool_failchance()))
 		explosion(middle,rand(1,2),rand(2,3),rand(3,4))
-	next_shot = coolinterval + world.time
+	next_shot = world.time + coolinterval + (range * strength * 2) SECONDS // Higher explosion strenght leads to higher cooldown
 
 	//Success, but we missed.
 	if(prob(100 - cal_accuracy()))

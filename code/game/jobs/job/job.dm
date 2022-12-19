@@ -4,6 +4,7 @@
 	var/title = "NOPE"
 	//Job access. The use of minimal_access or access is determined by a config setting: config.jobs_have_minimal_access
 	var/list/minimal_access = list()      // Useful for servers which prefer to only have access given to the places a job absolutely needs (Larger server population)
+	var/list/lowpop_access = list(access_maint_tunnels) // The added access (on-top of minimal or normal access) if the server is severely low on population, decided by lowpop_access_amount in the config.
 	var/list/access = list()              // Useful for servers which either have fewer players, so each person needs to fill more than one role, or servers which like to give more access, so players can't hide forever in their super secure departments (I'm looking at you, chemistry!)
 	var/list/software_on_spawn = list()   // Defines the software files that spawn on tablets and labtops
 	var/department_flag = 0
@@ -50,10 +51,11 @@
 	var/defer_roundstart_spawn = FALSE // If true, the job will be put off until all other jobs have been populated.
 	var/list/species_branch_rank_cache_ = list()
 	var/list/psi_faculties                // Starting psi faculties, if any.
-	var/psi_latency_chance = 0            // Chance of an additional psi latency, if any.
-	var/give_psionic_implant_on_join = TRUE // If psionic, will be implanted for control.
+	var/psi_latency_chance = 2            // Chance of an additional psi latency, if any.
+	var/give_psionic_implant_on_join = FALSE // If psionic, will be implanted for control.
 
 	var/use_species_whitelist // If set, restricts the job to players with the given species whitelist. This does NOT restrict characters joining as the job to the species itself.
+	var/require_whitelist // If set to a string, requires a separate whitelist entry to use the job equal to the given string. Note: If not-null the check happens, so please don't set unless you want the whitelist.
 
 	var/required_language
 
@@ -162,10 +164,14 @@
 	. = outfit.equip(H, title, alt_title, OUTFIT_ADJUSTMENT_SKIP_POST_EQUIP|OUTFIT_ADJUSTMENT_SKIP_ID_PDA|additional_skips)
 
 /datum/job/proc/get_access()
+	var/list/returned_access = list()
 	if(minimal_access.len && (!config || config.jobs_have_minimal_access))
-		return src.minimal_access.Copy()
+		returned_access = src.minimal_access.Copy()
 	else
-		return src.access.Copy()
+		returned_access = src.access.Copy()
+	if(!config || (config.lowpop_access && lowpop_access.len && (GLOB.clients.len < config.lowpop_access_amount)))
+		returned_access |= src.lowpop_access.Copy()
+	return returned_access
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/C)
@@ -175,6 +181,14 @@
 	if(C && config.use_age_restriction_for_jobs && isnull(C.holder) && isnum(C.player_age) && isnum(minimal_player_age))
 		return max(0, minimal_player_age - C.player_age)
 	return 0
+
+/datum/job/proc/is_job_whitelisted(client/C)
+	if (C && config.use_job_whitelists && require_whitelist)
+		if (whitelist_lookup(require_whitelist, C.ckey) || !isnull(C.holder))
+			return FALSE
+		return TRUE
+	else
+		return FALSE
 
 /datum/job/proc/apply_fingerprints(var/mob/living/carbon/human/target)
 	if(!istype(target))
@@ -201,6 +215,10 @@
 	if (!is_species_whitelist_allowed(prefs.client, use_species_whitelist))
 		S = all_species[use_species_whitelist]
 		to_chat(feedback, "<span class='boldannounce'>\An [S] species whitelist is required for [title].</span>")
+		return TRUE
+
+	if(is_job_whitelisted(prefs.client))
+		to_chat(feedback, "<span class='boldannounce'>\An [require_whitelist] whitelist is required for [title].</span>")
 		return TRUE
 
 	if(!isnull(allowed_branches) && (!prefs.branches[title] || !is_branch_allowed(prefs.branches[title])))
@@ -230,7 +248,7 @@
 	if(is_available(caller))
 		if(is_restricted(caller.prefs))
 			if(show_invalid_jobs)
-				return "<tr><td><a style='text-decoration: line-through' href='[href_string]'>[title]</a></td><td>[current_positions]</td><td>(Active: [get_active_count()])</td></tr>"
+				return "<tr><td><a style='background: #9E4444' href='[href_string]'>[title]</a></td><td>[current_positions]</td><td>(Active: [get_active_count()])</td></tr>"
 		else
 			return "<tr><td><a href='[href_string]'>[title]</a></td><td>[current_positions]</td><td>(Active: [get_active_count()])</td></tr>"
 	return ""
@@ -381,6 +399,8 @@
 		reasons["Your rank choice does not allow it."] = TRUE
 	if (!is_species_whitelist_allowed(caller))
 		reasons["You do not have the required [use_species_whitelist] species whitelist."] = TRUE
+	if (is_job_whitelisted(caller))
+		reasons["You do not have the required [require_whitelist] job whitelist."] = TRUE
 	var/datum/species/S = all_species[caller.prefs.species]
 	if(S)
 		if(!is_species_allowed(S))

@@ -105,7 +105,11 @@
 	else
 		var/obj/item/organ/organ_to_remove = attached_organs[1]
 		if(attached_organs.len > 1)
-			organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
+			var/list/options = list()
+			for(var/i in attached_organs)
+				var/obj/item/organ/I = target.internal_organs_by_name[i]
+				options[i] = image(icon = I.icon, icon_state = I.icon_state)
+			organ_to_remove = show_radial_menu(user, target, options, radius = 32)
 		if(organ_to_remove)
 			return organ_to_remove
 	return FALSE
@@ -156,7 +160,11 @@
 		else
 			var/obj/item/organ/organ_to_remove = removable_organs[1]
 			if(removable_organs.len > 1)
-				organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
+				var/list/options = list()
+				for(var/i = 1 to removable_organs.len)
+					var/obj/item/organ/I = removable_organs[i]
+					options[i] = image(icon = I.icon, icon_state = I.icon_state)
+				organ_to_remove = show_radial_menu(user, target, options, radius = 32)
 			if(organ_to_remove)
 				return organ_to_remove
 	return FALSE
@@ -172,7 +180,7 @@
 			return SURGERY_SKILLS_ROBOTIC_ON_MEAT
 	else
 		return ..()
-	
+
 /decl/surgery_step/internal/remove_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("\The [user] starts removing [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)] with \the [tool].", \
@@ -254,7 +262,7 @@
 				to_chat(user, SPAN_WARNING("\The [O.name] [o_is] in no state to be transplanted."))
 			else if(O.w_class > affected.cavity_max_w_class)
 				to_chat(user, SPAN_WARNING("\The [O.name] [o_is] too big for [affected.cavity_name] cavity!"))
-			else 
+			else
 				var/obj/item/organ/internal/I = target.internal_organs_by_name[O.organ_tag]
 				if(I && (I.parent_organ == affected.organ_tag))
 					to_chat(user, SPAN_WARNING("\The [target] already has [o_a][O.name]."))
@@ -395,7 +403,7 @@
 
 /decl/surgery_step/internal/treat_necrosis/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/reagent_containers/container = tool
-	if(!istype(container) || !container.reagents.has_reagent(/datum/reagent/peridaxon) || !..())
+	if(!istype(container) || !container.reagents.has_reagent(/datum/reagent/medicine/peridaxon) || !..())
 		return FALSE
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	var/list/obj/item/organ/internal/dead_organs = list()
@@ -406,7 +414,11 @@
 		return FALSE
 	var/obj/item/organ/internal/organ_to_fix = dead_organs[1]
 	if(dead_organs.len > 1)
-		organ_to_fix = input(user, "Which organ do you want to regenerate?") as null|anything in dead_organs
+		var/list/options = list()
+		for(var/i in dead_organs)
+			var/obj/item/organ/I = target.internal_organs_by_name[i]
+			options[i] = image(icon = I.icon, icon_state = I.icon_state)
+		organ_to_fix = show_radial_menu(user, target, options, radius = 32)
 	if(!organ_to_fix)
 		return FALSE
 	if(!organ_to_fix.can_recover())
@@ -431,7 +443,7 @@
 	var/datum/reagents/temp_reagents = new(amount, GLOB.temp_reagents_holder)
 	container.reagents.trans_to_holder(temp_reagents, amount)
 
-	var/rejuvenate = temp_reagents.has_reagent(/datum/reagent/peridaxon)
+	var/rejuvenate = temp_reagents.has_reagent(/datum/reagent/medicine/peridaxon)
 
 	var/trans = temp_reagents.trans_to_mob(target, temp_reagents.total_volume, CHEM_BLOOD) //technically it's contact, but the reagents are being applied to internal tissue
 	if (trans > 0)

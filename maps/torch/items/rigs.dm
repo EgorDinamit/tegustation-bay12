@@ -43,22 +43,34 @@
 	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
 	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
 	camera = /obj/machinery/camera/network/command
-	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC) //no available icons for aliens
+	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC,SPECIES_UNATHI)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_head_unathi.dmi'
+	)
 
 /obj/item/clothing/suit/space/rig/command
 	icon = 'maps/torch/icons/obj/obj_suit_solgov.dmi'
 	item_icons = list(slot_wear_suit_str = 'maps/torch/icons/mob/onmob_suit_solgov.dmi')
-	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC,SPECIES_UNATHI)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_suit_unathi.dmi'
+	)
 
 /obj/item/clothing/shoes/magboots/rig/command
 	icon = 'maps/torch/icons/obj/obj_feet_solgov.dmi'
 	item_icons = list(slot_shoes_str = 'maps/torch/icons/mob/onmob_feet_solgov.dmi')
-	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC,SPECIES_UNATHI)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_feet_unathi.dmi'
+	)
 
 /obj/item/clothing/gloves/rig/command
 	icon = 'maps/torch/icons/obj/obj_hands_solgov.dmi'
 	item_icons = list(slot_gloves_str = 'maps/torch/icons/mob/onmob_hands_solgov.dmi')
-	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC,SPECIES_UNATHI)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_hands_unathi.dmi'
+	)
 
 
 /obj/item/rig/command/equipped
@@ -272,7 +284,6 @@
 				   /obj/item/device/core_sampler,
 				   /obj/item/device/gps,
 				   /obj/item/pinpointer/radio,
-				   /obj/item/device/radio/beacon,
 				   /obj/item/pickaxe/xeno,
 				   /obj/item/storage/bag/fossils,
 				   /obj/item/rig_module/grenade_launcher/light)
@@ -303,6 +314,7 @@
 /obj/item/rig/exploration
 	name = "heavy exploration HCM"
 	suit_type = "heavy exploration hardsuit"
+	icon = 'maps/torch/icons/obj/uniques.dmi'
 	desc = "Expeditionary Corps' Exoplanet Exploration Armored Unit, A-Unit for short. Built for more hostile (and hungry) environments, it features additional armor and powered exoskeleton."
 	icon_state = "command_exp_rig"
 	armor = list(
@@ -332,7 +344,6 @@
 		/obj/item/device/depth_scanner,
 		/obj/item/device/gps,
 		/obj/item/pinpointer/radio,
-		/obj/item/device/radio/beacon,
 		/obj/item/storage/plants
 	)
 
@@ -348,7 +359,7 @@
 /obj/item/clothing/head/helmet/space/rig/command/exploration
 	camera = /obj/machinery/camera/network/exploration
 	icon_state = "command_exp_rig"
-	light_overlay = "yellow_double_light"
+	light_overlay = "helmet_light_wide"
 	brightness_on = 0.8
 
 /obj/item/rig/exploration/equipped

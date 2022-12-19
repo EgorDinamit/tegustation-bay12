@@ -138,7 +138,7 @@
 	to_chat(owner, "<span class = 'notice' font size='10'><B>What happened...?</B></span>")
 	alert(owner, "You have taken massive brain damage! You will not be able to remember the events leading up to your injury.", "Brain Damaged")
 	if(owner.psi)
-		owner.psi.check_latency_trigger(20, "physical trauma")
+		owner.psi.check_latency_trigger(40, "physical trauma")
 
 /obj/item/organ/internal/brain/Process()
 	if(owner)
@@ -209,13 +209,15 @@
 		var/damage_secondary = damage * 0.20
 		owner.flash_eyes()
 		owner.eye_blurry += damage_secondary
-		owner.confused += damage_secondary * 2
-		owner.Paralyse(damage_secondary)
-		owner.Weaken(round(damage, 1))
+		owner.confused += damage_secondary
+		if(damage >= 25)
+			owner.Weaken(round(damage_secondary*0.5, 1))
 		if(prob(30))
 			addtimer(CALLBACK(src, .proc/brain_damage_callback, damage), rand(6, 20) SECONDS, TIMER_UNIQUE)
 
 /obj/item/organ/internal/brain/proc/brain_damage_callback(var/damage) //Confuse them as a somewhat uncommon aftershock. Side note: Only here so a spawn isn't used. Also, for the sake of a unique timer.
+	if (!owner)
+		return
 	to_chat(owner, "<span class = 'notice' font size='10'><B>I can't remember which way is forward...</B></span>")
 	owner.confused += damage
 
@@ -225,13 +227,12 @@
 	if((owner.disabilities & EPILEPSY) && prob(1))
 		owner.seizure()
 	else if((owner.disabilities & TOURETTES) && prob(10))
-		owner.Stun(10)
 		switch(rand(1, 3))
 			if(1)
 				owner.emote("twitch")
 			if(2 to 3)
 				owner.say("[prob(50) ? ";" : ""][pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER", "TITS")]")
-		owner.make_jittery(100)
+		owner.make_jittery(10)
 	else if((owner.disabilities & NERVOUS) && prob(10))
 		owner.stuttering = max(10, owner.stuttering)
 

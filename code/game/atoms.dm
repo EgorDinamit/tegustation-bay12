@@ -14,6 +14,7 @@
 	var/list/climbers
 	var/climb_speed_mult = 1
 	var/init_flags = EMPTY_BITFIELD
+	var/list/orbiters = null
 
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
@@ -60,6 +61,9 @@
 		var/turf/T = loc
 		if(istype(T))
 			T.RecalculateOpacity()
+
+	if(health_max)
+		health_current = health_max
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -266,6 +270,8 @@ its easier to just keep the beam vertical.
 
 	to_chat(user, "[icon2html(src, user)] That's [f_name] [suffix]")
 	to_chat(user, desc)
+	if(health_max)
+		examine_damage_state(user)
 	return TRUE
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
@@ -616,3 +622,8 @@ its easier to just keep the beam vertical.
 
 /atom/proc/get_cell()
 	return
+
+/atom/proc/slam_into(mob/living/L)
+	L.Weaken(2)
+	L.visible_message(SPAN_WARNING("\The [L] [pick("ran", "slammed")] into \the [src]!"))
+	playsound(L, "punch", 25, 1, FALSE)

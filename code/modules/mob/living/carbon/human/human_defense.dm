@@ -8,6 +8,8 @@ meteor_act
 */
 
 /mob/living/carbon/human/bullet_act(var/obj/item/projectile/P, var/def_zone)
+	if(status_flags & GODMODE)
+		return PROJECTILE_FORCE_MISS
 
 	def_zone = check_zone(def_zone)
 	if(!has_organ(def_zone))
@@ -171,7 +173,7 @@ meteor_act
 	visible_message(SPAN_DANGER("\The [src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name][weapon_mention] by \the [user]!"))
 	return standard_weapon_hit_effects(I, user, effective_force, hit_zone)
 
-/mob/living/carbon/human/standard_weapon_hit_effects(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
+/mob/living/carbon/human/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, hit_zone)
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 	if(!affecting)
 		return 0
@@ -192,24 +194,24 @@ meteor_act
 	else if(!..())
 		return 0
 
-	var/unimpeded_force = (1 - blocked) * effective_force
+	var/unimpeded_force = (1 - blocked) * effective_force * I.stun_prob
 	if(effective_force > 10 || effective_force >= 5 && prob(33))
 		forcesay(GLOB.hit_appends)	//forcesay checks stat already
 		radio_interrupt_cooldown = world.time + (RADIO_INTERRUPT_DEFAULT * 0.8) //getting beat on can briefly prevent radio use
-	if((I.damtype == BRUTE || I.damtype == PAIN) && prob(25 + (unimpeded_force * 2)))
+	if((I.damtype == BRUTE || I.damtype == PAIN) && prob(15 + (unimpeded_force * 2)))
 		if(!stat)
 			if(headcheck(hit_zone))
 				//Harder to score a stun but if you do it lasts a bit longer
 				if(prob(unimpeded_force))
-					apply_effect(20, PARALYZE, 100 * blocked)
-					if(lying)
+					if(!lying)
 						visible_message("<span class='danger'>[src] [species.knockout_message]</span>")
+					apply_effect(3, PARALYZE, 100 * blocked)
 			else
 				//Easier to score a stun but lasts less time
 				if(prob(unimpeded_force + 5))
-					apply_effect(3, WEAKEN, 100 * blocked)
-					if(lying)
+					if(!lying)
 						visible_message("<span class='danger'>[src] has been knocked down!</span>")
+					apply_effect(1.5, WEAKEN, 100 * blocked)
 
 		//Apply blood
 		attack_bloody(I, user, effective_force, hit_zone)
@@ -275,7 +277,7 @@ meteor_act
 		return 0
 
 	//want the dislocation chance to be such that the limb is expected to dislocate after dealing a fraction of the damage needed to break the limb
-	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.organ_health_multiplier)*100
+	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.organ_health_multiplier) * (organ.damage * 1.75)
 	if(prob(dislocate_chance * blocked_mult(blocked)))
 		visible_message("<span class='danger'>[src]'s [organ.joint] [pick("gives way","caves in","crumbles","collapses")]!</span>")
 		organ.dislocate(1)
@@ -474,7 +476,52 @@ meteor_act
 	return perm
 
 /mob/living/carbon/human/lava_act(datum/gas_mixture/air, temperature, pressure)
+	if(status_flags & GODMODE)
+		return
+
 	var/was_burned = FireBurn(0.4 * vsc.fire_firelevel_multiplier, temperature, pressure)
 	if (was_burned)
 		fire_act(air, temperature)
 	return FALSE
+
+
+/mob/living/carbon/human/ex_act(severity)
+	if(status_flags & GODMODE)
+		return
+
+	if(!blinded)
+		flash_eyes()
+
+	var/b_loss = null
+	var/f_loss = null
+	switch (severity)
+		if (1.0)
+			b_loss = 400
+			f_loss = 100
+			var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
+			throw_at(target, 200, 4)
+		if (2.0)
+			b_loss = 60
+			f_loss = 60
+
+			if (get_sound_volume_multiplier() >= 0.2)
+				ear_damage += 30
+				ear_deaf += 120
+			if (prob(50))
+				Paralyse(6)
+
+		if(3.0)
+			b_loss = 30
+			if (get_sound_volume_multiplier() >= 0.2)
+				ear_damage += 15
+				ear_deaf += 60
+			if (prob(20))
+				Paralyse(2)
+
+	// focus most of the blast on one organ
+	apply_damage(0.7 * b_loss, BRUTE, null, DAM_EXPLODE, used_weapon = "Explosive blast")
+	apply_damage(0.7 * f_loss, BURN, null, DAM_EXPLODE, used_weapon = "Explosive blast")
+
+	// distribute the remaining 30% on all limbs equally (including the one already dealt damage)
+	apply_damage(0.3 * b_loss, BRUTE, null, DAM_EXPLODE | DAM_DISPERSED, used_weapon = "Explosive blast")
+	apply_damage(0.3 * f_loss, BURN, null, DAM_EXPLODE | DAM_DISPERSED, used_weapon = "Explosive blast")

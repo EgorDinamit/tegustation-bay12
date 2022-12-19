@@ -15,7 +15,7 @@
 	a_intent = I_HURT
 	health = 300
 	maxHealth = 300
-	speed = 8
+	movement_cooldown = 3
 	move_to_delay = 6
 	projectiletype = /obj/item/projectile/beam/drone
 	projectilesound = 'sound/weapons/laser3.ogg'
@@ -169,6 +169,9 @@
 
 //ion rifle!
 /mob/living/simple_animal/hostile/retaliate/malf_drone/emp_act(severity)
+	if(status_flags & GODMODE)
+		return
+
 	health -= rand(3,15) * (severity + 1)
 	disabled = rand(150, 600)
 	hostile_drone = 0

@@ -26,6 +26,8 @@
 	bone_material = null
 	bone_amount = 0
 
+	can_be_buckled = FALSE
+
 	var/toxloss = 0
 	var/is_adult = 0
 	var/number = 0 // Used to understand when someone is talking to it
@@ -67,7 +69,7 @@
 	return toxloss
 
 /mob/living/carbon/slime/get_digestion_product()
-	return /datum/reagent/slimejelly
+	return /datum/reagent/slime_jelly
 
 /mob/living/carbon/slime/adjustToxLoss(var/amount)
 	toxloss = Clamp(toxloss + amount, 0, maxHealth)
@@ -100,7 +102,7 @@
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 
 	if(reagents)
-		if(reagents.has_reagent(/datum/reagent/hyperzine)) // Hyperzine slows slimes down
+		if(reagents.has_reagent(/datum/reagent/medicine/stimulant/hyperzine)) // Hyperzine slows slimes down
 			tally *= 2
 
 		if(reagents.has_reagent(/datum/reagent/frostoil)) // Frostoil also makes them move VEEERRYYYYY slow
@@ -173,17 +175,25 @@
 	return
 
 /mob/living/carbon/slime/bullet_act(var/obj/item/projectile/Proj)
+	if(status_flags & GODMODE)
+		return PROJECTILE_FORCE_MISS
+
 	attacked += 10
 	..(Proj)
 	return 0
 
 /mob/living/carbon/slime/emp_act(severity)
+	if(status_flags & GODMODE)
+		return
+
 	powerlevel = 0 // oh no, the power!
 	..()
 
 /mob/living/carbon/slime/ex_act(severity)
-	..()
+	if(status_flags & GODMODE)
+		return
 
+	..()
 	var/b_loss = null
 	var/f_loss = null
 	switch (severity)

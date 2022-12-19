@@ -60,6 +60,10 @@
 	name = "goat crate"
 	held_type = /mob/living/simple_animal/hostile/retaliate/goat
 
+/obj/structure/largecrate/animal/sheep
+	name = "sheep crate"
+	held_type = /mob/living/simple_animal/friendly/sheep
+
 /obj/structure/largecrate/animal/goose
 	name = "goose containment unit"
 	held_type = /mob/living/simple_animal/hostile/retaliate/goose
@@ -70,6 +74,9 @@
 
 /obj/structure/largecrate/animal/cat/bones
 	held_type = /mob/living/simple_animal/friendly/cat/fluff/bones
+
+/obj/structure/largecrate/animal/snek
+	held_type = /mob/living/simple_animal/friendly/snek
 
 /obj/structure/largecrate/animal/chick
 	name = "chicken crate"

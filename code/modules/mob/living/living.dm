@@ -140,11 +140,8 @@ default behaviour is:
 			..()
 			var/saved_dir = AM.dir
 			if (!istype(AM, /atom/movable) || AM.anchored)
-				if(confused && prob(50) && !MOVING_DELIBERATELY(src))
-					Weaken(2)
-					playsound(loc, "punch", 25, 1, -1)
-					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
-					src.apply_damage(5, BRUTE)
+				if ((confused || (MUTATION_CLUMSY in mutations)) && !weakened && !MOVING_DELIBERATELY(src))
+					AM.slam_into(src)
 				return
 			if (!now_pushing)
 				now_pushing = 1
@@ -154,6 +151,7 @@ default behaviour is:
 					for(var/obj/structure/window/win in get_step(AM,t))
 						now_pushing = 0
 						return
+				AM.glide_size = glide_size
 				step(AM, t)
 				if (istype(AM, /mob/living))
 					var/mob/living/tmob = AM
@@ -200,7 +198,7 @@ default behaviour is:
 
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
-		health = 100
+		health = maxHealth
 		set_stat(CONSCIOUS)
 	else
 		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
@@ -508,6 +506,11 @@ default behaviour is:
 	if (buckled)
 		return
 
+	if(is_shifted)
+		is_shifted = FALSE
+		pixel_x = default_pixel_x
+		pixel_y = default_pixel_y
+
 	if(get_dist(src, pulling) > 1)
 		stop_pulling()
 
@@ -691,6 +694,8 @@ default behaviour is:
 
 	resting = !resting
 	to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
+	if(hud_used)
+		hud_used.rest_button.icon_state = "rest_[resting]"
 
 //called when the mob receives a bright flash
 /mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
@@ -814,6 +819,9 @@ default behaviour is:
 	if(auras)
 		for(var/a in auras)
 			remove_aura(a)
+
+	if(ranged_ability)
+		ranged_ability.remove_ranged_ability(src)
 
 	qdel(selected_image)
 	return ..()

@@ -13,6 +13,9 @@
 		. = ATTACK_SUCCESSFUL //Shoving this in here as a 'best guess' since this proc is about to sleep and return and we won't be able to know the real value
 		handle_attack_delay(A, melee_attack_delay) // This will sleep this proc for a bit, which is why waitfor is false.
 
+	if(stat == DEAD) // In case you died during that attack_delay
+		return
+
 	// Cooldown testing is done at click code (for players) and interface code (for AI).
 	setClickCooldown(get_attack_speed(get_natural_weapon()))
 
@@ -29,19 +32,18 @@
 /mob/living/simple_animal/proc/do_attack(atom/A, turf/T)
 	face_atom(A)
 	var/missed = FALSE
-	if(!isturf(A) && !(A in T) ) // Turfs don't contain themselves so checking contents is pointless if we're targeting a turf.
+	if (get_dir(src, A) == facing_dir && get_dist(src, A) <= 1) // Turfs don't contain themselves so checking contents is pointless if we're targeting a turf.
 		missed = TRUE
 	else if(!T.AdjacentQuick(src))
 		missed = TRUE
 
 	if(missed) // Most likely we have a slow attack and they dodged it or we somehow got moved.
-		// admin_attack_log(src, A, "Animal-attacked (dodged)", admin_notify = FALSE)
 		playsound(src, 'sound/weapons/punchmiss.ogg', 75, 1)
 		visible_message(SPAN_WARNING("\The [src] misses their attack."))
 		return FALSE
 
 	var/obj/item/natural_weapon/weapon = get_natural_weapon()
-	weapon.resolve_attackby(A, src)
+	weapon?.resolve_attackby(A, src)
 
 	return TRUE
 
@@ -70,6 +72,9 @@
 		if(reload_count >= reload_max)
 			try_reload()
 			return FALSE
+
+	if(stat == DEAD) // In case you died during that attack_delay
+		return
 
 	visible_message("<span class='danger'><b>\The [src]</b> fires at \the [A]!</span>")
 	shoot(A)
@@ -102,7 +107,8 @@
 	// P.accuracy += calculate_accuracy()
 	P.dispersion += calculate_dispersion()
 
-	P.launch(target = A)
+	var/selected_zone = pick(BP_ALL_LIMBS) // Random limb targeting.
+	P.launch(A, selected_zone, src)
 	if(needs_reload)
 		reload_count++
 
@@ -160,6 +166,7 @@
 // Special attacks, like grenades or blinding spit or whatever.
 // Don't override this, override do_special_attack() for your blinding spit/etc.
 /mob/living/simple_animal/proc/special_attack_target(atom/A)
+	set waitfor = FALSE
 	face_atom(A)
 
 	if(special_attack_delay)

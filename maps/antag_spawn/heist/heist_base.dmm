@@ -37,6 +37,7 @@
 /area/map_template/syndicate_mothership/raider_base)
 "ai" = (
 /obj/structure/table/standard,
+/obj/machinery/stove/hotplate,
 /turf/unsimulated/floor{
 	icon_state = "white"
 	},
@@ -960,7 +961,7 @@
 	available_channels = list();
 	ears = list();
 	name = "\proper Meatbag";
-	speak = list("Yaaar!","Squaaak!","Fight me Matey!","BAWWWWK Vox trying to eat me!")
+	say_list_type = /datum/say_list/parrot/heist
 	},
 /turf/unsimulated/floor{
 	icon_state = "asteroid"
@@ -1559,7 +1560,7 @@
 /obj/structure/table/rack,
 /obj/item/grenade/empgrenade,
 /obj/item/grenade/flashbang,
-/obj/item/grenade/spawnergrenade/manhacks,
+/obj/item/grenade/spawnergrenade/viscerator,
 /obj/random/raider/biggun,
 /turf/simulated/floor/shuttle/red,
 /area/map_template/skipjack_station/start)

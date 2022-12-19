@@ -62,7 +62,6 @@
 	waterproof = FALSE
 
 	var/burst = 1
-	var/can_autofire = FALSE
 	var/fire_delay = 6 	//delay after shooting before the gun can be used again. Cannot be less than [burst_delay+1]
 	var/burst_delay = 2	//delay between shots, if firing in bursts
 	var/move_delay = 1
@@ -102,6 +101,11 @@
 	var/has_safety = TRUE
 	var/safety_icon 	   //overlay to apply to gun based on safety state, if any
 
+	var/autofire_enabled = FALSE
+	var/atom/autofiring_at
+	var/mob/autofiring_by
+	var/autofiring_timer
+
 /obj/item/gun/Initialize()
 	. = ..()
 	for(var/i in 1 to firemodes.len)
@@ -112,6 +116,50 @@
 
 	if(scope_zoom)
 		verbs += /obj/item/gun/proc/scope
+
+/obj/item/gun/Destroy()
+	// autofire timer is automatically cleaned up
+	autofiring_at = null
+	autofiring_by = null
+	. = ..()
+
+/obj/item/gun/proc/set_autofire(var/atom/fire_at, var/mob/fire_by)
+	. = TRUE
+	if(!istype(fire_at) || !istype(fire_by))
+		. = FALSE
+	else if(QDELETED(fire_at) || QDELETED(fire_by) || QDELETED(src))
+		. = FALSE
+	else if(!autofire_enabled)
+		. = FALSE
+	if(.)
+		autofiring_at = fire_at
+		autofiring_by = fire_by
+		if(!autofiring_timer)
+			autofiring_timer = addtimer(CALLBACK(src, .proc/handle_autofire), burst_delay, (TIMER_STOPPABLE | TIMER_LOOP | TIMER_UNIQUE | TIMER_OVERRIDE))
+	else
+		clear_autofire()
+
+/obj/item/gun/proc/clear_autofire()
+	autofiring_at = null
+	autofiring_by = null
+	if(autofiring_timer)
+		deltimer(autofiring_timer)
+		autofiring_timer = null
+
+/obj/item/gun/proc/handle_autofire()
+	set waitfor = FALSE
+	. = TRUE
+	if(QDELETED(autofiring_at) || QDELETED(autofiring_by))
+		. = FALSE
+	else if(autofiring_by.get_active_hand() != src || autofiring_by.incapacitated())
+		. = FALSE
+	else if(!autofiring_by.client || !(autofiring_by in view(autofiring_by.client.view, autofiring_by)))
+		. = FALSE
+	if(!.)
+		clear_autofire()
+	else if(can_autofire())
+		autofiring_by.set_dir(get_dir(src, autofiring_at))
+		Fire(autofiring_at, autofiring_by, null, (get_dist(autofiring_at, autofiring_by) <= 1), FALSE, FALSE)
 
 /obj/item/gun/update_twohanding()
 	if(one_hand_penalty)
@@ -201,9 +249,11 @@
 	update_icon()
 	return ..()
 
-/obj/item/gun/proc/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
-	if(!user || !target) return
-	if(target.z != user.z) return
+/obj/item/gun/proc/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0, set_click_cooldown=TRUE)
+	if(!user || !target)
+		return
+	if(target.z != user.z)
+		return
 
 	add_fingerprint(user)
 
@@ -211,7 +261,7 @@
 		return
 
 	if(safety())
-		if(user.a_intent == I_HURT && !user.skill_fail_prob(SKILL_WEAPONS, 100, SKILL_EXPERT, 0.5)) //reflex un-safeying
+		if(user.a_intent == I_HURT && !user.skill_fail_prob(SKILL_WEAPONS, 100, SKILL_EXPERIENCED, 0.5)) //reflex un-safeying
 			toggle_safety(user)
 		else
 			handle_click_safety(user)
@@ -223,10 +273,10 @@
 		return
 
 	last_safety_check = world.time
-	var/shoot_time = (burst - 1)* burst_delay
-	user.setClickCooldown(shoot_time) //no clicking on things while shooting
-	user.SetMoveCooldown(shoot_time) //no moving while shooting either
-	next_fire_time = world.time + shoot_time
+	if(set_click_cooldown)
+		var/shoot_time = (burst - 1) * burst_delay
+		user.setClickCooldown(shoot_time) //no clicking on things while shooting
+		next_fire_time = world.time + shoot_time
 
 	var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
 
@@ -270,7 +320,7 @@
 		return 2
 	//just assume we can shoot through glass and stuff. No big deal, the player can just choose to not target someone
 	//on the other side of a window if it makes a difference. Or if they run behind a window, too bad.
-	return check_trajectory(target, user)
+	return (target in check_trajectory(target, user))
 
 //called if there was no projectile to shoot
 /obj/item/gun/proc/handle_click_empty(mob/user)
@@ -299,7 +349,7 @@
 				SPAN_DANGER("You hear a [fire_sound_text]!")
 			)
 
-		if (pointblank)
+		if (pointblank && ismob(target))
 			admin_attack_log(user, target,
 				"shot point blank with \a [type]",
 				"shot point blank with \a [type]",
@@ -326,7 +376,8 @@
 					if(8 to INFINITY)
 						to_chat(user, "<span class='warning'>You struggle to hold \the [src] steady!</span>")
 
-		if(screen_shake)
+		// If your skill in weapons is higher than/equal to (screen_shake + 2) - it won't shake at all.
+		if(screen_shake && !user.skill_check(SKILL_WEAPONS,screen_shake+2))
 			spawn()
 				shake_camera(user, screen_shake+1, screen_shake)
 
@@ -371,7 +422,7 @@
 	var/disp_mod = dispersion[min(burst, dispersion.len)]
 	var/stood_still = last_handled
 	//Not keeping gun active will throw off aim (for non-Masters)
-	if(user.skill_check(SKILL_WEAPONS, SKILL_PROF))
+	if(user.skill_check(SKILL_WEAPONS, SKILL_MASTER))
 		stood_still = min(user.l_move_time, last_handled)
 	else
 		stood_still = max(user.l_move_time, last_handled)
@@ -387,7 +438,7 @@
 		acc_mod -= one_hand_penalty/2
 		disp_mod += one_hand_penalty*0.5 //dispersion per point of two-handedness
 
-	if(burst > 1 && !user.skill_check(SKILL_WEAPONS, SKILL_ADEPT))
+	if(burst > 1 && !user.skill_check(SKILL_WEAPONS, SKILL_TRAINED))
 		acc_mod -= 1
 		disp_mod += 0.5
 
@@ -413,18 +464,17 @@
 		P.set_clickpoint(params)
 
 	//shooting while in shock
-	var/x_offset = 0
-	var/y_offset = 0
+	var/shock_dispersion = 0
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/mob = user
 		if(mob.shock_stage > 120)
-			y_offset = rand(-2,2)
-			x_offset = rand(-2,2)
+			shock_dispersion = rand(-4,4)
 		else if(mob.shock_stage > 70)
-			y_offset = rand(-1,1)
-			x_offset = rand(-1,1)
+			shock_dispersion = rand(-2,2)
 
-	var/launched = !P.launch_from_gun(target, user, src, target_zone, x_offset, y_offset)
+	P.dispersion += shock_dispersion
+
+	var/launched = !P.launch_from_gun(target, target_zone, user, params)
 
 	if(launched)
 		play_fire_sound(user,P)
@@ -501,7 +551,7 @@
 	zoom(user, zoom_offset, view_size)
 	if(zoom)
 		accuracy = scoped_accuracy
-		if(user.skill_check(SKILL_WEAPONS, SKILL_PROF))
+		if(user.skill_check(SKILL_WEAPONS, SKILL_MASTER))
 			accuracy += 2
 		if(screen_shake)
 			screen_shake = round(screen_shake*zoom_amount+1) //screen shake is worse when looking through a scope
@@ -597,10 +647,14 @@
 		afterattack(shoot_to,target)
 		return 1
 
-/obj/item/gun/proc/can_autofire()
-	return (can_autofire && world.time >= next_fire_time)
+/obj/item/gun/dropped(mob/living/user)
+	. = ..()
+	clear_autofire()
 
-/obj/item/gun/proc/check_accidents(mob/living/user, message = "[user] fumbles with the [src] and it goes off!",skill_path = SKILL_WEAPONS, fail_chance = 20, no_more_fail = SKILL_EXPERT, factor = 2)
+/obj/item/gun/proc/can_autofire()
+	return (autofire_enabled && world.time >= next_fire_time)
+
+/obj/item/gun/proc/check_accidents(mob/living/user, message = "[user] fumbles with the [src] and it goes off!",skill_path = SKILL_WEAPONS, fail_chance = 20, no_more_fail = SKILL_EXPERIENCED, factor = 2)
 	if(istype(user))
 		if(!safety() && user.skill_fail_prob(skill_path, fail_chance, no_more_fail, factor) && special_check(user))
 			user.visible_message(SPAN_WARNING(message))

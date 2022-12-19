@@ -76,7 +76,6 @@
 		to_world_log("## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform Carn.")
 	if(current)					//remove ourself from our old body's mind variable
 		if(changeling)
-			current.remove_changeling_powers()
 			current.verbs -= /datum/changeling/proc/EvolutionMenu
 		current.mind = null
 
@@ -201,7 +200,8 @@
 			current.set_psi_rank(href_list["set_psi_faculty"], text2num(href_list["set_psi_faculty_rank"]))
 			log_and_message_admins("set [key_name(current)]'s [href_list["set_psi_faculty"]] faculty to [text2num(href_list["set_psi_faculty_rank"])].")
 			var/datum/admins/admin = GLOB.admins[usr.key]
-			if(istype(admin)) admin.show_player_panel(current)
+			if(istype(admin))
+				admin.show_player_panel(current)
 			return TRUE
 
 	if(href_list["add_antagonist"])

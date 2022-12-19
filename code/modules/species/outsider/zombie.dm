@@ -415,9 +415,9 @@ GLOBAL_LIST_INIT(zombie_species, list(\
 	if (skillset && skillset.skill_list)
 		skillset.skill_list = list()
 		for(var/decl/hierarchy/skill/S in GLOB.skills) //Only want trained CQC and athletics
-			skillset.skill_list[S.type] = SKILL_NONE
-		skillset.skill_list[SKILL_HAULING] = SKILL_ADEPT
-		skillset.skill_list[SKILL_COMBAT] = SKILL_ADEPT
+			skillset.skill_list[S.type] = SKILL_UNTRAINED
+		skillset.skill_list[SKILL_HAULING] = SKILL_TRAINED
+		skillset.skill_list[SKILL_COMBAT] = SKILL_TRAINED
 		skillset.on_levels_change()
 
 	species = all_species[SPECIES_ZOMBIE]
@@ -470,7 +470,7 @@ GLOBAL_LIST_INIT(zombie_species, list(\
 	last_special = world.time + 5 SECONDS
 
 	src.visible_message(SPAN_DANGER("\The [src] hunkers down over \the [target], tearing into their flesh."))
-	playsound(loc, 'sound/effects/bonebreak3.ogg', 20, 1)
+	playsound(loc, 'sound/effects/wounds/bonebreak3.ogg', 20, 1)
 
 	target.adjustHalLoss(50)
 

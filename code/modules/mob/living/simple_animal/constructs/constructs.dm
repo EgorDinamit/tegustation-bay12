@@ -7,7 +7,7 @@
 	response_disarm = "flailed at"
 	response_harm   = "punched"
 	icon_dead = "shade_dead"
-	speed = -1
+	movement_cooldown = 4
 	a_intent = I_HURT
 	status_flags = CANPUSH
 	universal_speak = FALSE
@@ -94,11 +94,11 @@
 	harm_intent_damage = 0
 	natural_weapon = /obj/item/natural_weapon/juggernaut
 	mob_size = MOB_LARGE
-	speed = 3
+	movement_cooldown = 6
 	environment_smash = 2
 	status_flags = 0
 	resistance = 10
-	construct_spells = list(/spell/aoe_turf/conjure/forcewall/lesser)
+	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = TRUE
 
 /obj/item/natural_weapon/juggernaut
@@ -151,10 +151,10 @@
 	maxHealth = 75
 	health = 75
 	natural_weapon = /obj/item/natural_weapon/wraith
-	speed = -1
+	movement_cooldown = 3
 	environment_smash = 1
 	see_in_dark = 7
-	construct_spells = list(/spell/targeted/ethereal_jaunt/shift)
+	construct_spells = list(/datum/spell/targeted/ethereal_jaunt/shift)
 
 /mob/living/simple_animal/construct/wraith/can_fall(anchor_bypass, turf/location_override)
 	return FALSE
@@ -186,13 +186,12 @@
 	response_harm = "viciously beaten"
 	harm_intent_damage = 5
 	natural_weapon = /obj/item/natural_weapon/cult_builder
-	speed = 0
 	environment_smash = 1
-	construct_spells = list(/spell/aoe_turf/conjure/construct/lesser,
-							/spell/aoe_turf/conjure/wall,
-							/spell/aoe_turf/conjure/floor,
-							/spell/aoe_turf/conjure/soulstone,
-							/spell/aoe_turf/conjure/pylon
+	construct_spells = list(/datum/spell/aoe_turf/conjure/construct/lesser,
+							/datum/spell/aoe_turf/conjure/wall,
+							/datum/spell/aoe_turf/conjure/floor,
+							/datum/spell/aoe_turf/conjure/soulstone,
+							/datum/spell/aoe_turf/conjure/pylon
 							)
 
 /obj/item/natural_weapon/cult_builder
@@ -226,13 +225,13 @@
 	response_harm   = "harmlessly punched"
 	harm_intent_damage = 0
 	natural_weapon = /obj/item/natural_weapon/juggernaut/behemoth
-	speed = 5
+	movement_cooldown = 8
 	environment_smash = 2
 
 	resistance = 10
 	var/energy = 0
 	var/max_energy = 1000
-	construct_spells = list(/spell/aoe_turf/conjure/forcewall/lesser)
+	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = TRUE
 
 /obj/item/natural_weapon/juggernaut/behemoth
@@ -253,12 +252,12 @@
 	maxHealth = 150
 	health = 150
 	natural_weapon = /obj/item/natural_weapon/harvester
-	speed = -1
+	movement_cooldown = 3
 	environment_smash = 1
 	see_in_dark = 7
 
 	construct_spells = list(
-			/spell/targeted/harvest
+			/datum/spell/targeted/harvest
 		)
 
 /obj/item/natural_weapon/harvester

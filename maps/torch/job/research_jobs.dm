@@ -29,13 +29,18 @@
 		access_petrov_maint, access_torch_fax, access_radio_sci, access_radio_exp
 	)
 
+	lowpop_access = list(
+		access_medical, access_chemistry,
+		access_cargo, access_cargo_bot,
+	)
+
 	min_skill = list(   SKILL_BUREAUCRACY = SKILL_BASIC,
 	                    SKILL_COMPUTER    = SKILL_BASIC,
 	                    SKILL_FINANCE     = SKILL_BASIC,
 	                    SKILL_BOTANY      = SKILL_BASIC,
 	                    SKILL_ANATOMY     = SKILL_BASIC,
-	                    SKILL_DEVICES     = SKILL_ADEPT,
-	                    SKILL_SCIENCE     = SKILL_ADEPT)
+	                    SKILL_DEVICES     = SKILL_TRAINED,
+	                    SKILL_SCIENCE     = SKILL_TRAINED)
 
 	max_skill = list(   SKILL_ANATOMY     = SKILL_MAX,
 	                    SKILL_DEVICES     = SKILL_MAX,
@@ -62,7 +67,7 @@
 	min_skill = list(   SKILL_BUREAUCRACY = SKILL_BASIC,
 	                    SKILL_COMPUTER    = SKILL_BASIC,
 	                    SKILL_DEVICES     = SKILL_BASIC,
-	                    SKILL_SCIENCE     = SKILL_ADEPT)
+	                    SKILL_SCIENCE     = SKILL_TRAINED)
 
 	max_skill = list(   SKILL_ANATOMY     = SKILL_MAX,
 	                    SKILL_DEVICES     = SKILL_MAX,
@@ -86,6 +91,11 @@
 		access_xenoarch, access_nanotrasen, access_solgov_crew, access_expedition_shuttle, access_guppy, access_hangar,
 		access_petrov_analysis, access_petrov_phoron, access_petrov_toxins, access_petrov_chemistry, access_torch_fax,
 		access_petrov_maint, access_radio_sci, access_radio_exp
+	)
+
+	lowpop_access = list(
+		access_medical, access_chemistry,
+		access_cargo, access_cargo_bot,
 	)
 
 	minimal_access = list()
@@ -133,4 +143,9 @@
 		access_petrov_analysis, access_petrov_phoron, access_petrov_toxins, access_petrov_chemistry,
 		access_radio_sci, access_radio_exp
 	)
+
+	lowpop_access = list(
+		access_medical
+	)
+
 	possible_goals = list(/datum/goal/achievement/notslimefodder)

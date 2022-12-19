@@ -127,14 +127,20 @@
 	cost = 1
 	flags = GEAR_HAS_COLOR_SELECTION
 
+/datum/gear/accessory/wristwatches
+	display_name = "wrist watch selection"
+	path = /obj/item/clothing/accessory/wristwatches
+	cost = 1
+	flags = GEAR_HAS_TYPE_SELECTION
+
 /datum/gear/accessory/pronouns
 	display_name = "pronoun badge selection"
 	path = /obj/item/clothing/accessory/pronouns
 	flags = GEAR_HAS_TYPE_SELECTION
 
-/datum/gear/accessory/pridepins
-	display_name = "pride pin selection"
-	path = /obj/item/clothing/accessory/pridepins
+/datum/gear/accessory/identitypins
+	display_name = "identity pin selection"
+	path = /obj/item/clothing/accessory/identitypins
 	flags = GEAR_HAS_TYPE_SELECTION
 
 /datum/gear/accessory/neckerchief

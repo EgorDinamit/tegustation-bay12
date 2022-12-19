@@ -9,7 +9,7 @@
 	slot_flags = SLOT_BACK
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 2, TECH_ESOTERIC = 8)
 	caliber = CALIBER_ANTIMATERIAL
-	screen_shake = 2 //extra kickback
+	screen_shake = 3 //extra kickback
 	handle_casings = HOLD_CASINGS
 	load_method = SINGLE_CASING
 	max_shells = 1
@@ -33,7 +33,7 @@
 
 /obj/item/gun/projectile/heavysniper/handle_post_fire(mob/user, atom/target, var/pointblank=0, var/reflex=0)
 	..()
-	if(user && user.skill_check(SKILL_WEAPONS, SKILL_PROF))
+	if(user && user.skill_check(SKILL_WEAPONS, SKILL_MASTER))
 		to_chat(user, "<span class='notice'>You work the bolt open with a reflexive motion, ejecting [chambered]!</span>")
 		unload_shell()
 

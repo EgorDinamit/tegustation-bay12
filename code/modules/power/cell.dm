@@ -87,8 +87,8 @@
 
 /obj/item/cell/examine(mob/user)
 	. = ..()
-	to_chat(user, "The label states it's capacity is [maxcharge] Wh")
-	to_chat(user, "The charge meter reads [round(src.percent(), 0.1)]%")
+	to_chat(user, "The label places its capacity at [maxcharge] Wh.")
+	to_chat(user, "Its charge meter is at [round(percent(), 0.1)]%.")
 
 /obj/item/cell/emp_act(severity)
 	//remove this once emp changes on dev are merged in
@@ -204,6 +204,12 @@
 
 /obj/item/cell/hyper/empty
 	charge = 0
+
+/obj/item/cell/hyper/adherent
+	name = "crystal-ceramic grid"
+	desc = "A dense, smooth blue polygon the size of a clenched fist. It's etched with symmetrical facets that are filled with a thick, gelatinous material."
+	icon = 'icons/mob/human_races/species/adherent/organs.dmi'
+	icon_state = "cell"
 
 /obj/item/cell/infinite
 	name = "experimental power cell"

@@ -61,6 +61,7 @@
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/rcd,/obj/item/rpd)
 
 /obj/item/clothing/head/helmet/space/rig/industrial
+	light_overlay = "helmet_light_wide"
 	camera = /obj/machinery/camera/network/mining
 	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL,SPECIES_UNATHI,SPECIES_IPC)
 
@@ -116,9 +117,9 @@
 		)
 
 /obj/item/clothing/head/helmet/space/rig/eva
-	light_overlay = "helmet_light_dual"
+	light_overlay = "helmet_light_alt"
 	camera = /obj/machinery/camera/network/engineering
-	species_restricted = list(SPECIES_HUMAN,SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL,SPECIES_UNATHI,SPECIES_IPC)
 	sprite_sheets = list(
 		SPECIES_SKRELL = 'icons/mob/species/skrell/onmob_head_skrell.dmi',
 		SPECIES_UNATHI = 'icons/mob/species/unathi/onmob_head_helmet_unathi.dmi'
@@ -221,7 +222,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/hazmat
 	glove_type = /obj/item/clothing/gloves/rig/hazmat
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/scanner/health,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/radio/beacon,/obj/item/pickaxe/xeno,/obj/item/storage/bag/fossils)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/scanner/health,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/pickaxe/xeno,/obj/item/storage/bag/fossils)
 
 	req_access = list(access_tox)
 
@@ -275,6 +276,7 @@
 	req_access = list(access_medical_equip)
 
 /obj/item/clothing/head/helmet/space/rig/medical
+	light_overlay = "helmet_light_wide"
 	camera = /obj/machinery/camera/network/medbay
 	species_restricted = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_IPC)
 	sprite_sheets = list(
@@ -413,4 +415,3 @@
 	if(user.gender == FEMALE && !findtext(chest.icon_state,"_f", -2))
 		chest.icon_state = "[chest.icon_state]_f"
 	chest.update_icon(1)
-

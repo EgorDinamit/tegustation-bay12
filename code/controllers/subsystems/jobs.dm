@@ -550,6 +550,8 @@ SUBSYSTEM_DEF(jobs)
 
 	job.post_equip_rank(H, alt_title || rank)
 
+	INVOKE_ASYNC(GLOBAL_PROC, .proc/show_location_blurb, H.client, 30)
+
 	return H
 
 /datum/controller/subsystem/jobs/proc/titles_by_department(var/dept)
@@ -563,3 +565,8 @@ SUBSYSTEM_DEF(jobs)
 			continue
 		empty_playable_ai_cores += new /obj/structure/AIcore/deactivated(get_turf(S))
 	return 1
+
+/proc/show_location_blurb(client/C, duration)
+	var/area/A = get_area(C.mob)
+	var/blurb_text = "[stationdate2text()], [stationtime2text()]\n[station_name()], [A.name]"
+	show_blurb(C, duration, blurb_text, 5)

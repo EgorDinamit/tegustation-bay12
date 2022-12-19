@@ -7,7 +7,6 @@
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
 	var/randpixel = 6
 	var/r_speed = 1.0
-	var/health = null
 	var/burn_point = null
 	var/burning = null
 	var/hitsound = "swing_hit"
@@ -22,6 +21,8 @@
 	var/force = 0
 	var/attack_cooldown = DEFAULT_WEAPON_COOLDOWN
 	var/melee_accuracy_bonus = 0
+	/// Multiplier for use in human_defense.dm : Set to 0 for no random stuns.
+	var/stun_prob = 0.75
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -118,6 +119,7 @@
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
+	health_resistances = DAMAGE_RESIST_ELECTRICAL
 
 //Checks if the item is being held by a mob, and if so, updates the held icons
 /obj/item/proc/update_twohanding()
@@ -154,6 +156,7 @@
 	return FALSE
 
 /obj/item/ex_act(severity)
+	..()
 	switch(severity)
 		if(1)
 			qdel(src)
@@ -535,7 +538,7 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/get_parry_chance(mob/user)
 	. = base_parry_chance
 	if(user)
-		if(base_parry_chance || user.skill_check(SKILL_COMBAT, SKILL_ADEPT))
+		if(base_parry_chance || user.skill_check(SKILL_COMBAT, SKILL_TRAINED))
 			. += 10 * (user.get_skill_value(SKILL_COMBAT) - SKILL_BASIC)
 
 /obj/item/proc/on_disarm_attempt(mob/target, mob/living/attacker)
@@ -698,15 +701,15 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 
 	var/devicename = zoomdevicename || name
+	var/is_distracted = FALSE
 
 	var/mob/living/carbon/human/H = user
 	if(user.incapacitated(INCAPACITATION_DISABLED))
 		to_chat(user, "<span class='warning'>You are unable to focus through the [devicename].</span>")
 		return
 	else if(!zoom && istype(H) && H.equipment_tint_total >= TINT_MODERATE)
-		to_chat(user, "<span class='warning'>Your visor gets in the way of looking through the [devicename].</span>")
+		to_chat(user, "<span class='warning'>Your eyewear gets in the way of looking through the [devicename].</span>")
 		return
-	var/is_distracted
 	if (H) // Humans can zoom through items they wear on their eyes
 		is_distracted = !zoom && H.get_active_hand() != src && H.get_equipped_item(slot_glasses) != src
 	else
@@ -715,13 +718,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(is_distracted)
 		to_chat(user, SPAN_WARNING("You are too distracted to look through the [devicename]. Perhaps if it was in your active hand this might work better."))
 		return
-
-	if(user.hud_used.hud_shown)
-		user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
-	user.client.view = viewsize
-	if(istype(H))
-		H.handle_vision()
-	zoom = 1
 
 	var/viewoffset = WORLD_ICON_SIZE * tileoffset
 	switch(user.dir)
@@ -738,16 +734,25 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 			user.client.pixel_x = -viewoffset
 			user.client.pixel_y = 0
 
-	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
+	if(user.hud_used.hud_shown)
+		user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
+	if(istype(H))
+		H.handle_vision()
+
+	user.client.view = viewsize
+	zoom = 1
 
 	GLOB.destroyed_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.dir_set_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
+	GLOB.moved_event.register(user, src, /obj/item/proc/unzoom)
+	GLOB.dir_set_event.register(user, src, /obj/item/proc/unzoom)
+	GLOB.item_unequipped_event.register(src, user, /mob/living/proc/unzoom)
 	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
 
-/obj/item/proc/zoom_drop(var/obj/item/I, var/mob/user)
-	unzoom(user)
+	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
+
+/mob/living/proc/unzoom(var/obj/item/I)
+	if(I)
+		I.unzoom(src)
 
 /obj/item/proc/unzoom(var/mob/user)
 	if(!zoom)
@@ -755,9 +760,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	zoom = 0
 
 	GLOB.destroyed_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.dir_set_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.item_unequipped_event.unregister(src, src, /obj/item/proc/zoom_drop)
+	GLOB.moved_event.unregister(user, src, /obj/item/proc/unzoom)
+	GLOB.dir_set_event.unregister(user, src, /obj/item/proc/unzoom)
+	GLOB.item_unequipped_event.unregister(src, user, /mob/living/proc/unzoom)
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
@@ -855,6 +860,10 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/lava_act()
 	. = (!throwing) ? ..() : FALSE
+
+/// Called when this item is microwaved. Return an instance of an atom to add it to the microwave's list.
+/obj/item/proc/microwave_act(obj/machinery/microwave/M)
+	return
 
 /obj/item/proc/has_embedded()
 	return

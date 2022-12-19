@@ -76,6 +76,8 @@ var/const/NEGATIVE_INFINITY = -1#INF // win: -1.#INF, lin: -inf
 
 #define isspaceturf(A) istype(A, /turf/space)
 
+#define isopenturf(A) istype(A, /turf/simulated/open)
+
 #define ispAI(A) istype(A, /mob/living/silicon/pai)
 
 #define isrobot(A) istype(A, /mob/living/silicon/robot)
@@ -179,6 +181,8 @@ var/const/NEGATIVE_INFINITY = -1#INF // win: -1.#INF, lin: -inf
 
 #define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
 
+#define SPAN_USERDANGER(X) "<span class='userdanger'>[X]</span>"
+
 #define SPAN_OCCULT(X) "<span class='cult'>[X]</span>"
 
 #define SPAN_MFAUNA(X) "<span class='mfauna'>[X]</span>"
@@ -189,7 +193,13 @@ var/const/NEGATIVE_INFINITY = -1#INF // win: -1.#INF, lin: -inf
 
 #define SPAN_DEBUG(X) "<span class='debug'>[X]</span>"
 
+#define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
+
+#define SPAN_MENTOR(X) "<span class='mentor'>[X]</span>"
+
 #define SPAN_STYLE(style, X) "<span style=\"[style]\">[X]</span>"
+
+#define SPAN_CLASS(class, X) "<span class=\"[class]\">[X]</span>"
 
 #define FONT_COLORED(color, text) "<font color='[color]'>[text]</font>"
 

@@ -147,7 +147,7 @@
 	exertion_effect_chance = 10
 	exertion_hydration_scale = 1
 	exertion_reagent_scale = 5
-	exertion_reagent_path = /datum/reagent/lactate
+	exertion_reagent_path = /datum/reagent/lactic_acid
 	exertion_emotes_biological = list(
 		/decl/emote/exertion/biological,
 		/decl/emote/exertion/biological/breath,
@@ -320,9 +320,9 @@
 		return ..()
 	var/datum/gender/T = gender_datums[H.get_gender()]
 	if(H.pulling_punches)
-		return "\n[T.His] manipulation arms are out and [T.he] looks ready to use complex items."
+		return SPAN_NOTICE("<i>[T.His] manipulation arms are out and [T.he] looks ready to use complex items.</i>")
 	else
-		return "\n<span class='warning'>[T.His] deadly upper arms are raised and [T.he] looks ready to attack!</span>"
+		return SPAN_WARNING("[T.His] deadly upper arms are raised and [T.he] looks ready to attack!")
 
 /datum/species/nabber/handle_post_spawn(var/mob/living/carbon/human/H)
 	..()

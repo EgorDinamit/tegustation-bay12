@@ -81,6 +81,7 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 /datum/controller/subsystem/processing/plants/proc/create_random_seed(var/survive_on_station)
 	var/datum/seed/seed = new()
 	seed.randomize()
+	seed.uid = seeds.len + 1
 	seed.name = "[seed.uid]"
 	seeds[seed.name] = seed
 
@@ -88,8 +89,8 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 		if(seed.consume_gasses)
 			seed.consume_gasses[GAS_PHORON] = null
 			seed.consume_gasses[GAS_CO2] = null
-		if(seed.chems && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
-			seed.chems[/datum/reagent/acid/polyacid] = null // Eating through the hull will make these plants completely inviable, albeit very dangerous.
+		if(seed.chems && !isnull(seed.chems[/datum/reagent/acid/polytrinic]))
+			seed.chems[/datum/reagent/acid/polytrinic] = null // Eating through the hull will make these plants completely inviable, albeit very dangerous.
 			seed.chems -= null // Setting to null does not actually remove the entry, which is weird.
 		seed.set_trait(TRAIT_IDEAL_HEAT,293)
 		seed.set_trait(TRAIT_HEAT_TOLERANCE,20)

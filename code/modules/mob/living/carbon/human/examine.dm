@@ -55,10 +55,6 @@
 			species_name += "[species.name]"
 		msg += ", <b><font color='[species.get_flesh_colour(src)]'>\a [species_name]!</font></b>[(user.can_use_codex() && SScodex.get_codex_entry(get_codex_value())) ?  SPAN_NOTICE(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]") : ""]"
 
-	var/extra_species_text = species.get_additional_examine_text(src)
-	if(extra_species_text)
-		msg += "[extra_species_text]<br>"
-
 	msg += "<br>"
 
 	//uniform
@@ -162,9 +158,9 @@
 	if(mSmallsize in mutations)
 		msg += "[T.He] [T.is] small halfling!\n"
 
-	if (src.stat)
+	if (stat || status_flags & FAKEDEATH)
 		msg += "<span class='warning'>[T.He] [T.is]n't responding to anything around [T.him] and seems to be unconscious.</span>\n"
-		if((stat == DEAD || is_asystole() || src.losebreath) && distance <= 3)
+		if((stat == DEAD || is_asystole() || losebreath || status_flags & FAKEDEATH) && distance <= 3)
 			msg += "<span class='warning'>[T.He] [T.does] not appear to be breathing.</span>\n"
 
 	if (fire_stacks > 0)
@@ -177,9 +173,9 @@
 	var/ssd_msg = species.get_ssd(src)
 	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && stat != DEAD)
 		if(!key)
-			msg += "<span class='deadsay'>[T.He] [T.is] [ssd_msg]. [T.He] won't be recovering any time soon.</span>\n"
+			msg += SPAN_DEADSAY("[T.He] [T.is] [ssd_msg]. [T.He] won't be recovering any time soon. (Ghosted)") + "\n"
 		else if(!client)
-			msg += "<span class='deadsay'>[T.He] [T.is] [ssd_msg].</span>\n"
+			msg += SPAN_DEADSAY("[T.He] [T.is] [ssd_msg]. (Disconnected)") + "\n"
 
 	if (admin_paralyzed)
 		msg += SPAN_DEBUG("OOC: [T.He] [T.has] been paralyzed by staff. Please avoid interacting with [T.him] unless cleared to do so by staff.") + "\n"
@@ -192,6 +188,10 @@
 		msg += "[T.He] looks a lot younger than you remember.\n"
 	if(became_older)
 		msg += "[T.He] looks a lot older than you remember.\n"
+
+	var/extra_species_text = species.get_additional_examine_text(src)
+	if(extra_species_text)
+		msg += "[extra_species_text]\n"
 
 	var/list/wound_flavor_text = list()
 	var/applying_pressure = ""

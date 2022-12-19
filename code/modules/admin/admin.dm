@@ -93,7 +93,8 @@ var/global/floorIsLava = 0
 			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_AOOC]'><font color='[(muted & MUTE_AOOC)?"red":"blue"]'>AOOC</font></a> |
 			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_PRAY]'><font color='[(muted & MUTE_PRAY)?"red":"blue"]'>PRAY</font></a> |
 			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_ADMINHELP]'><font color='[(muted & MUTE_ADMINHELP)?"red":"blue"]'>ADMINHELP</font></a> |
-			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_DEADCHAT]'><font color='[(muted & MUTE_DEADCHAT)?"red":"blue"]'>DEADCHAT</font></a>\]
+			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_DEADCHAT]'><font color='[(muted & MUTE_DEADCHAT)?"red":"blue"]'>DEADCHAT</font></a>\] |
+			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_MENTOR]'><font_color='[(muted & MUTE_MENTOR)?"red":"blue"]'MENTOR</font></a>\]
 			(<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_ALL]'><font color='[(muted & MUTE_ALL)?"red":"blue"]'>toggle all</font></a>)
 		"}
 		body += "<br><br><b>Staff Warning:</b> [M.client.staffwarn ? M.client.staffwarn : "No"]<br>"
@@ -782,6 +783,22 @@ var/global/floorIsLava = 0
 	SSstatistics.add_field_details("admin_verb","TLOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
+/datum/admins/proc/endnow()
+	set category = "Server"
+	set desc = "round goes bye bye"
+	set name = "End Round"
+
+	var/check = alert("This will immediately end the round. Are you sure about this?", "End Game", "Yes", "No") == "Yes"
+
+	if (!check)
+		return
+
+	if (GAME_STATE > RUNLEVEL_LOBBY)
+		SSticker.forced_end = TRUE
+		log_and_message_admins("has ended the round.")
+	else
+		to_chat(usr,FONT_LARGE(SPAN_WARNING("You cannot end the round before it's begun!")))
+
 /datum/admins/proc/toggledsay()
 	set category = "Server"
 	set desc="Globally Toggles DSAY"
@@ -1460,26 +1477,38 @@ var/global/floorIsLava = 0
 	set category = "Special Verbs"
 	set name = "Send Fax"
 	set desc = "Sends a fax to this machine"
-	var/department = input("Choose a fax", "Fax") as null|anything in GLOB.alldepartments
-	for(var/obj/machinery/photocopier/faxmachine/sendto in GLOB.allfaxes)
-		if(sendto.department == department)
 
-			if (!istype(src,/datum/admins))
-				src = usr.client.holder
-			if (!istype(src,/datum/admins))
-				to_chat(usr, "Error: you are not an admin!")
-				return
+	// Admin status checks
+	if (!istype(src,/datum/admins))
+		src = usr.client.holder
+	if (!istype(src,/datum/admins))
+		to_chat(usr, "Error: you are not an admin!")
+		return
 
-			var/replyorigin = input(src.owner, "Please specify who the fax is coming from", "Origin") as text|null
+	// Origin
+	var/list/option_list = GLOB.admin_departments.Copy() + GLOB.alldepartments.Copy() + "(Custom)" + "(Cancel)"
+	var/replyorigin = input(owner, "Please specify who the fax is coming from. Choose '(Custom)' to enter a custom department or '(Cancel) to cancel.", "Fax Origin") as null|anything in option_list
+	if (!replyorigin || replyorigin == "(Cancel)")
+		return
+	if (replyorigin == "(Custom)")
+		replyorigin = input(owner, "Please specify who the fax is coming from.", "Fax Machine Department Tag") as text|null
+		if (!replyorigin)
+			return
+	if (replyorigin == "Unknown" || replyorigin == "(Custom)" || replyorigin == "(Cancel)")
+		to_chat(owner, SPAN_WARNING("Invalid origin selected."))
+		return
 
-			var/obj/item/paper/admin/P = new /obj/item/paper/admin( null ) //hopefully the null loc won't cause trouble for us
-			faxreply = P
+	// Destination
+	var/department = input("Choose a destination fax", "Fax Target") as null|anything in GLOB.alldepartments
 
-			P.admindatum = src
-			P.origin = replyorigin
-			P.destination = sendto
-
-			P.adminbrowse()
+	// Generate the fax
+	var/obj/item/paper/admin/P = new /obj/item/paper/admin( null ) //hopefully the null loc won't cause trouble for us
+	faxreply = P
+	P.admindatum = src
+	P.origin = replyorigin
+	P.department = department
+	P.destinations = get_fax_machines_by_department(department)
+	P.adminbrowse()
 
 
 /client/proc/check_fax_history()
@@ -1496,19 +1525,18 @@ var/global/floorIsLava = 0
 		data += "<center>No faxes yet.</center>"
 	show_browser(usr, "<HTML><HEAD><TITLE>Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=FaxHistory;size=450x400")
 
-datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
+/datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 
-/datum/admins/proc/faxCallback(var/obj/item/paper/admin/P, var/obj/machinery/photocopier/faxmachine/destination)
+/datum/admins/proc/faxCallback(obj/item/paper/admin/P)
 	var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
 
-	P.SetName("[P.origin] - [customname]")
-	P.desc = "This is a paper titled '" + P.name + "'."
+	P.SetName("[customname]")
 
-	var/shouldStamp = 1
+	var/shouldStamp = TRUE
 	if(!P.sender) // admin initiated
-		switch(alert("Would you like the fax stamped?",, "Yes", "No"))
-			if("No")
-				shouldStamp = 0
+		var/need_stamp = alert(src.owner, "Would you like the fax stamped?", "Stamp", "Yes", "No")
+		if(need_stamp != "Yes")
+			shouldStamp = FALSE
 
 	if(shouldStamp)
 		P.stamps += "<hr><i>This paper has been stamped by the [P.origin] Quantum Relay.</i>"
@@ -1534,13 +1562,13 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 		P.overlays += stampoverlay
 
 	var/obj/item/rcvdcopy
-	rcvdcopy = destination.copy(P)
+	var/obj/machinery/photocopier/faxmachine/destination = P.destinations[1]
+	rcvdcopy = destination.copy(P, FALSE)
 	rcvdcopy.forceMove(null) //hopefully this shouldn't cause trouble
 	GLOB.adminfaxes += rcvdcopy
+	var/success = send_fax_loop(P, P.department, P.origin)
 
-
-
-	if(destination.recievefax(P))
+	if(success)
 		to_chat(src.owner, "<span class='notice'>Message reply to transmitted successfully.</span>")
 		if(P.sender) // sent as a reply
 			log_admin("[key_name(src.owner)] replied to a fax message from [key_name(P.sender)]")
@@ -1548,10 +1576,10 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 				if((R_INVESTIGATE) & C.holder.rights)
 					to_chat(C, "<span class='log_message'><span class='prefix'>FAX LOG:</span>[key_name_admin(src.owner)] replied to a fax message from [key_name_admin(P.sender)] (<a href='?_src_=holder;AdminFaxView=\ref[rcvdcopy]'>VIEW</a>)</span>")
 		else
-			log_admin("[key_name(src.owner)] has sent a fax message to [destination.department]")
+			log_admin("[key_name(src.owner)] has sent a fax message to [P.department]")
 			for(var/client/C in GLOB.admins)
 				if((R_INVESTIGATE) & C.holder.rights)
-					to_chat(C, "<span class='log_message'><span class='prefix'>FAX LOG:</span>[key_name_admin(src.owner)] has sent a fax message to [destination.department] (<a href='?_src_=holder;AdminFaxView=\ref[rcvdcopy]'>VIEW</a>)</span>")
+					to_chat(C, "<span class='log_message'><span class='prefix'>FAX LOG:</span>[key_name_admin(src.owner)] has sent a fax message to [P.department] (<a href='?_src_=holder;AdminFaxView=\ref[rcvdcopy]'>VIEW</a>)</span>")
 
 	else
 		to_chat(src.owner, "<span class='warning'>Message reply failed.</span>")

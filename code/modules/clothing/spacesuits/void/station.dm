@@ -41,8 +41,8 @@
 		)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd,/obj/item/rpd)
 
-/obj/item/clothing/suit/space/void/engineering/New()
-	..()
+/obj/item/clothing/suit/space/void/engineering/Initialize()
+	. = ..()
 	slowdown_per_slot[slot_wear_suit] = 1
 
 /obj/item/clothing/suit/space/void/engineering/prepared
@@ -67,7 +67,7 @@
 		bio = ARMOR_BIO_SHIELDED,
 		rad = ARMOR_RAD_MINOR
 		)
-	light_overlay = "helmet_light_dual"
+	light_overlay = "helmet_light_dual_alt"
 	max_pressure_protection = ENG_VOIDSUIT_MAX_PRESSURE
 
 /obj/item/clothing/suit/space/void/mining
@@ -252,8 +252,8 @@
 		rad = ARMOR_RAD_SHIELDED
 		)
 
-/obj/item/clothing/suit/space/void/engineering/alt/New()
-	..()
+/obj/item/clothing/suit/space/void/engineering/alt/Initialize()
+	. = ..()
 	slowdown_per_slot[slot_wear_suit] = 2
 
 /obj/item/clothing/suit/space/void/engineering/alt/prepared
@@ -303,8 +303,8 @@
 		rad = ARMOR_RAD_RESISTANT
 		)
 
-/obj/item/clothing/suit/space/void/medical/alt/New()
-	..()
+/obj/item/clothing/suit/space/void/medical/alt/Initialize()
+	. = ..()
 	slowdown_per_slot[slot_wear_suit] = 0
 
 /obj/item/clothing/suit/space/void/medical/alt/prepared
@@ -317,6 +317,7 @@
 	desc = "A somewhat tacky voidsuit helmet, a fact mitigated by heavy armor plating."
 	icon_state = "rig0-secalt"
 	item_state = "secalt_helm"
+	light_overlay = "helmet_light_alt"
 	armor = list(
 		melee = ARMOR_MELEE_VERY_HIGH,
 		bullet = ARMOR_BALLISTIC_SMALL,
@@ -464,7 +465,7 @@
 		bio = ARMOR_BIO_SHIELDED,
 		rad = ARMOR_RAD_SHIELDED
 	)
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/scanner/health,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/radio/beacon,/obj/item/pickaxe/xeno,/obj/item/storage/bag/fossils)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/scanner/health,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/pickaxe/xeno,/obj/item/storage/bag/fossils)
 
 /obj/item/clothing/head/helmet/space/void/ceti
 	name = "CTI voidsuit helmet"

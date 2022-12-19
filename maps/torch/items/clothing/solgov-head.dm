@@ -30,6 +30,18 @@
 	desc = "It's a black ballcap bearing the Expeditonary Corps crest. The brim has gold trim."
 	icon_state = "expeditioncomsoft"
 
+/obj/item/clothing/head/soft/solgov/fleet/hijab
+	name = "fleet hijab"
+	desc = "It's a veil which is wrapped to cover the head and chest.  This one is tighter fitting and has a Fleet insignia embroidered into it."
+	icon_state = "hijab_fleet"
+	flags_inv = HIDEEARS|BLOCKHEADHAIR
+
+/obj/item/clothing/head/soft/solgov/fleet/turban
+	name = "fleet turban"
+	desc = "It's a sturdy cloth, worn around the head.  This one is tighter fitting and has a Fleet insignia embroidered into it."
+	icon_state = "turban_fleet"
+	flags_inv = BLOCKHEADHAIR
+
 /obj/item/clothing/head/soft/solgov/fleet
 	name = "fleet cap"
 	desc = "It's a navy blue field cap with the SCG Fleet crest in a silver colour."
@@ -419,6 +431,7 @@
 //SolGov Hardsuits
 
 /obj/item/clothing/head/helmet/space/void/engineering/alt/sol
+	light_overlay = "helmet_light_alt"
 	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
 	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
 	sprite_sheets = list(
@@ -431,6 +444,7 @@
 		)
 
 /obj/item/clothing/head/helmet/space/void/atmos/alt/sol
+	light_overlay = "helmet_light_alt"
 	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
 	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
 	sprite_sheets = list(
@@ -443,6 +457,7 @@
 		)
 
 /obj/item/clothing/head/helmet/space/void/pilot/sol
+	light_overlay = "helmet_light_alt"
 	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
 	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
 	sprite_sheets = list(
@@ -455,6 +470,7 @@
 		)
 
 /obj/item/clothing/head/helmet/space/void/medical/alt/sol
+	light_overlay = "helmet_light_green_alt"
 	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
 	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
 	sprite_sheets = list(
@@ -465,3 +481,47 @@
 		SPECIES_UNATHI = 'maps/torch/icons/obj/unathi/obj_head_solgov_unathi.dmi',
 		SPECIES_SKRELL = 'maps/torch/icons/obj/skrell/obj_head_solgov_skrell.dmi',
 		)
+
+/obj/item/clothing/head/helmet/space/void/command
+	name = "command voidsuit helmet"
+	desc = "A light, radiation resistant voidsuit helmet commonly used among SCG uniformed services."
+	icon_state = "rig0_command"
+	item_state = "command_helm"
+	light_overlay = "helmet_light_green_alt"
+	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
+	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'maps/torch/icons/mob/unathi/onmob_head_solgov_unathi.dmi',
+		SPECIES_SKRELL = 'maps/torch/icons/mob/skrell/onmob_head_solgov_skrell.dmi',
+		)
+	sprite_sheets_obj = list(
+		SPECIES_UNATHI = 'maps/torch/icons/obj/unathi/obj_head_solgov_unathi.dmi',
+		SPECIES_SKRELL = 'maps/torch/icons/obj/skrell/obj_head_solgov_skrell.dmi',
+		)
+
+/obj/item/clothing/head/helmet/space/void/exploration
+	name = "exploration voidsuit helmet"
+	desc = "A helmet of Exoplanet Exploration Unit, standard issue for Expeditionary Corps away missions. It has an armored glass dome for superiour visibility and extra anti-radiation lining."
+	icon = 'maps/torch/icons/obj/obj_head_solgov.dmi'
+	item_icons = list(slot_head_str = 'maps/torch/icons/mob/onmob_head_solgov.dmi')
+	icon_state = "rig0_explorer"
+	item_state = "explorer_helm"
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'maps/torch/icons/mob/unathi/onmob_head_solgov_unathi.dmi',
+		SPECIES_SKRELL = 'maps/torch/icons/mob/skrell/onmob_head_solgov_skrell.dmi',
+		)
+	sprite_sheets_obj = list(
+		SPECIES_UNATHI = 'maps/torch/icons/obj/unathi/obj_head_solgov_unathi.dmi',
+		SPECIES_SKRELL = 'maps/torch/icons/obj/skrell/obj_head_solgov_skrell.dmi',
+		)
+	armor = list(
+		melee = ARMOR_MELEE_RESISTANT,
+		bullet = ARMOR_BALLISTIC_MINOR,
+		laser = ARMOR_LASER_MINOR,
+		energy = ARMOR_ENERGY_RESISTANT,
+		bomb = ARMOR_BOMB_PADDED,
+		bio = ARMOR_BIO_SHIELDED,
+		rad = ARMOR_RAD_RESISTANT
+		)
+	light_overlay = "helmet_light_dual_alt"
+	tinted = FALSE

@@ -18,6 +18,10 @@
 	var/sqltext = dbcon.Quote(t);
 	return copytext(sqltext, 2, length(sqltext));//Quote() adds quotes around input, we already do that
 
+// Adds a prefix to the table parameter, used in SQL to unify all tables under a common prefix, i.e. "tegu__[tablename]"
+/proc/format_table_name(table as text)
+	return "" + table // TODO: Remove hardcoded table prefix, make config entry instead
+
 /*
  * Text sanitization
  */
@@ -352,6 +356,23 @@ proc/TextPreview(var/string,var/len=40)
 	if(!(C && C.get_preference_value(/datum/client_preference/chat_tags) == GLOB.PREF_SHOW))
 		return tagdesc
 	return icon2html(icon('./icons/chattags.dmi', tagname), world, realsize=TRUE, class="text_tag")
+
+/proc/text_badge(client/C = null)
+	if(!C)
+		return null
+	var/badge_name
+	if(C.holder)
+		//No badges when deadminned
+		if(C.is_stealthed())
+			return null
+		//Admin badge otherwise
+		if(C.holder.rank)
+			badge_name = C.holder.rank
+	else if(IS_TRUSTED_PLAYER(C.ckey))
+		badge_name = "Trusted"
+	if(badge_name)
+		return icon2html(icon('./icons/chatbadges.dmi', badge_name), world, realsize=TRUE, class="text_tag")
+	return null
 
 /proc/contains_az09(var/input)
 	for(var/i=1, i<=length(input), i++)

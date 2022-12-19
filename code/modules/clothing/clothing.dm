@@ -389,22 +389,22 @@ BLIND     // can't see anything
 		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_hats.dmi',
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand_hats.dmi',
 		)
+	sprite_sheets = list(
+		SPECIES_VOX = 'icons/mob/species/vox/onmob_head_vox.dmi',
+		SPECIES_VOX_ARMALIS = 'icons/mob/species/vox/onmob_head_vox_armalis.dmi',
+		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_head_unathi.dmi',
+		SPECIES_NABBER = 'icons/mob/species/nabber/onmob_head_gas.dmi'
+		)
 	body_parts_covered = HEAD
 	slot_flags = SLOT_HEAD
 	w_class = ITEM_SIZE_SMALL
+	blood_overlay_type = "helmetblood"
 
 	var/image/light_overlay_image
 	var/light_overlay = "helmet_light"
 	var/light_applied
 	var/brightness_on
 	var/on = 0
-
-	sprite_sheets = list(
-		SPECIES_VOX = 'icons/mob/species/vox/onmob_head_vox.dmi',
-		SPECIES_VOX_ARMALIS = 'icons/mob/species/vox/onmob_head_vox_armalis.dmi',
-		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_head_unathi.dmi',
-		)
-	blood_overlay_type = "helmetblood"
 
 /obj/item/clothing/head/equipped(var/mob/user, var/slot)
 	light_overlay_image = null
@@ -725,14 +725,11 @@ BLIND     // can't see anything
 	return TRUE
 
 /obj/item/clothing/shoes/proc/handle_movement(var/turf/walking, var/running)
-	if (attached_cuffs && running)
-		if (attached_cuffs.health)
-			attached_cuffs.health -= 1
-			if (attached_cuffs.health < 1)
-				visible_message(SPAN_WARNING("\The [attached_cuffs] attached to \the [src] snap and fall away!"), range = 1)
-				verbs -= /obj/item/clothing/shoes/proc/remove_cuffs
-				slowdown_per_slot[slot_shoes] -= attached_cuffs.elastic ? 10 : 15
-				QDEL_NULL(attached_cuffs)
+	if(running && attached_cuffs?.damage_health(1))
+		visible_message(SPAN_WARNING("\The [attached_cuffs] attached to \the [src] snap and fall away!"), range = 1)
+		verbs -= /obj/item/clothing/shoes/proc/remove_cuffs
+		slowdown_per_slot[slot_shoes] -= attached_cuffs.elastic ? 10 : 15
+		QDEL_NULL(attached_cuffs)
 	return
 
 /obj/item/clothing/shoes/update_clothing_icon()
@@ -761,6 +758,8 @@ BLIND     // can't see anything
 		SPECIES_MANTID_ALATE = 'icons/mob/species/mantid/onmob_suit_alate.dmi',
 		SPECIES_MANTID_GYNE = 'icons/mob/species/mantid/onmob_suit_gyne.dmi'
 		)
+
+	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_OVER)
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))
@@ -810,9 +809,18 @@ BLIND     // can't see anything
 	var/displays_id = 1
 	var/rolled_down = -1 //0 = unrolled, 1 = rolled, -1 = cannot be toggled
 	var/rolled_sleeves = -1 //0 = unrolled, 1 = rolled, -1 = cannot be toggled
+	species_restricted = list(
+		"exclude",
+		SPECIES_ADHERENT,
+		SPECIES_NABBER,
+		SPECIES_MANTID_ALATE,
+		SPECIES_MANTID_GYNE,
+		SPECIES_MONARCH_QUEEN
+	)
 	sprite_sheets = list(
 		SPECIES_VOX = 'icons/mob/species/vox/onmob_under_vox.dmi',
 		SPECIES_VOX_ARMALIS = 'icons/mob/species/vox/onmob_under_vox_armalis.dmi',
+		SPECIES_ADHERENT = 'icons/mob/species/adherent/onmob_under_adherent.dmi',
 		SPECIES_NABBER = 'icons/mob/species/nabber/onmob_under_gas.dmi',
 		SPECIES_MONARCH_QUEEN = 'icons/mob/species/nabber/msq/onmob_under_msq.dmi',
 		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_under_unathi.dmi',
@@ -820,13 +828,32 @@ BLIND     // can't see anything
 		SPECIES_MANTID_GYNE = 'icons/mob/species/mantid/onmob_under_gyne.dmi'
 	)
 
+	valid_accessory_slots = list(
+		ACCESSORY_SLOT_UTILITY,
+		ACCESSORY_SLOT_HOLSTER,
+		ACCESSORY_SLOT_ARMBAND,
+		ACCESSORY_SLOT_RANK,
+		ACCESSORY_SLOT_DEPT,
+		ACCESSORY_SLOT_DECOR,
+		ACCESSORY_SLOT_MEDAL,
+		ACCESSORY_SLOT_INSIGNIA,
+		ACCESSORY_SLOT_OVER
+		)
+
+	restricted_accessory_slots = list(
+		ACCESSORY_SLOT_UTILITY,
+		ACCESSORY_SLOT_HOLSTER,
+		ACCESSORY_SLOT_ARMBAND,
+		ACCESSORY_SLOT_RANK,
+		ACCESSORY_SLOT_DEPT,
+		ACCESSORY_SLOT_OVER
+		)
+
 	//convenience var for defining the icon state for the overlay used when the clothing is worn.
 	//Also used by rolling/unrolling.
 	var/worn_state = null
 	//Whether the clothing item has gender-specific states when worn.
 	var/gender_icons = 0
-	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT,ACCESSORY_SLOT_DECOR,ACCESSORY_SLOT_MEDAL,ACCESSORY_SLOT_INSIGNIA)
-	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT)
 
 /obj/item/clothing/under/New()
 	..()

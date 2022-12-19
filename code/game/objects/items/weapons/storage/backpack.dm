@@ -76,11 +76,29 @@
 	name = "\improper Santa's gift bag"
 	desc = "Space Santa uses this to deliver toys to all the nice children in space for Christmas! Wow, it's pretty big!"
 	icon_state = "giftbag0"
-	item_state = "giftbag"
-	w_class = ITEM_SIZE_HUGE
-	max_w_class = ITEM_SIZE_NORMAL
-	max_storage_space = 400 // can store a ton of shit!
+	item_state = "giftbag0"
+	w_class = ITEM_SIZE_GARGANTUAN
+	max_w_class = ITEM_SIZE_HUGE
+	max_storage_space = 100
 	item_state_slots = null
+
+/obj/item/storage/backpack/santabag/Initialize()
+	. = ..()
+	spawn_gifts()
+
+/obj/item/storage/backpack/santabag/proc/spawn_gifts()
+	addtimer(CALLBACK(src, .proc/spawn_gifts), 30 SECONDS)
+
+	var/mob/M = get(loc, /mob)
+	if(!istype(M))
+		return
+	if(M.mind)
+		var/turf/floor = get_turf(src)
+		var/obj/item/I = new /obj/item/a_gift/anything(floor)
+		if(can_be_inserted(I, stop_messages = TRUE))
+			handle_item_insertion(I, TRUE)
+		else
+			qdel(I)
 
 /obj/item/storage/backpack/cultpack
 	name = "trophy rack"
@@ -185,11 +203,9 @@
 	w_class = ITEM_SIZE_HUGE
 	max_storage_space = DEFAULT_BACKPACK_STORAGE + 10
 
-/obj/item/storage/backpack/dufflebag/New()
-	..()
-	slowdown_per_slot[slot_back] = 3
-	slowdown_per_slot[slot_r_hand] = 1
-	slowdown_per_slot[slot_l_hand] = 1
+/obj/item/storage/backpack/dufflebag/Initialize()
+	. = ..()
+	slowdown_per_slot[slot_back] = 1
 
 /obj/item/storage/backpack/dufflebag/syndie
 	name = "black dufflebag"
@@ -197,9 +213,9 @@
 	icon_state = "duffle_syndie"
 	item_state_slots = list(slot_l_hand_str = "duffle_syndie", slot_r_hand_str = "duffle_syndie")
 
-/obj/item/storage/backpack/dufflebag/syndie/New()
-	..()
-	slowdown_per_slot[slot_back] = 1
+/obj/item/storage/backpack/dufflebag/syndie/Initialize()
+	. = ..()
+	slowdown_per_slot[slot_back] = 0
 
 /obj/item/storage/backpack/dufflebag/syndie/med
 	name = "medical dufflebag"

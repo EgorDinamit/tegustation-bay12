@@ -83,7 +83,7 @@
 	icon_living = "meatworm"
 	icon_dead = "meatworm_dead"
 	turns_per_move = 3
-	speed = -2
+	movement_cooldown = 2
 	maxHealth = 20
 	health = 20
 	natural_weapon = /obj/item/natural_weapon/bite/weak
@@ -99,7 +99,7 @@
 	icon_state = "meatball"
 	icon_living = "meatball"
 	icon_dead = "meatball_dead"
-	speed = 2
+	movement_cooldown = 3
 	maxHealth = 50
 	health = 50
 	natural_weapon = /obj/item/natural_weapon/meatball
@@ -118,7 +118,7 @@
 	icon_state = "wormscientist"
 	icon_living = "wormscientist"
 	icon_dead = "wormscientist_dead"
-	speed = 7
+	movement_cooldown = 4
 	maxHealth = 90
 	health = 90
 	natural_weapon = /obj/item/natural_weapon/wormscience
@@ -136,7 +136,7 @@
 	icon_state = "wormguard"
 	icon_living = "wormguard"
 	icon_dead = "wormguard_dead"
-	speed = 7
+	movement_cooldown = 4
 	maxHealth = 60
 	health = 60
 	natural_weapon = /obj/item/natural_weapon/wormguard
@@ -157,7 +157,7 @@
 	icon_living = "meatmound"
 	icon_dead = "meatmound_dead"
 	flash_vulnerability = 1
-	speed = 10
+	movement_cooldown = 4
 	maxHealth = 160
 	health = 160
 	natural_weapon = /obj/item/natural_weapon/meatmound
@@ -178,21 +178,23 @@
 	agony = 10
 	armor_penetration = 5
 
-	muzzle_type = /obj/effect/projectile/meatstation/muzzle
-	tracer_type = /obj/effect/projectile/meatstation/tracer
-	impact_type = /obj/effect/projectile/meatstation/impact
+	muzzle_type = /obj/effect/projectile/muzzle/laser/meatstation
+	tracer_type = /obj/effect/projectile/tracer/laser/meatstation
+	impact_type = /obj/effect/projectile/impact/laser/meatstation
 
-/obj/effect/projectile/meatstation/
+/obj/effect/projectile/tracer/laser/meatstation
 	light_color = COLOR_RED_LIGHT
 	icon = 'maps/away/meatstation/meatstation_sprites.dmi'
-
-/obj/effect/projectile/meatstation/tracer
 	icon_state = "redstun"
 
-/obj/effect/projectile/meatstation/muzzle
+/obj/effect/projectile/muzzle/laser/meatstation
+	light_color = COLOR_RED_LIGHT
+	icon = 'maps/away/meatstation/meatstation_sprites.dmi'
 	icon_state = "muzzle_redstun"
 
-/obj/effect/projectile/meatstation/impact
+/obj/effect/projectile/impact/laser/meatstation
+	light_color = COLOR_RED_LIGHT
+	icon = 'maps/away/meatstation/meatstation_sprites.dmi'
 	icon_state = "impact_redstun"
 
 //items
@@ -218,7 +220,6 @@
 	desc = "A disgusting slab of meat."
 	icon = 'maps/away/meatstation/meatstation_sprites.dmi'
 	icon_state = "meat"
-	health = 150
 	filling_color = "#f41d7e"
 	slice_path = /obj/item/reagent_containers/food/snacks/rawcutlet/meatstation
 

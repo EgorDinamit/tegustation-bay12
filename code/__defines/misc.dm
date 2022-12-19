@@ -68,6 +68,7 @@
 #define EVENT_LEVEL_MUNDANE  1
 #define EVENT_LEVEL_MODERATE 2
 #define EVENT_LEVEL_MAJOR    3
+#define EVENT_LEVEL_EXO      4
 
 //General-purpose life speed define for plants.
 #define HYDRO_SPEED_MULTIPLIER 1
@@ -80,6 +81,7 @@
 #define AREA_FLAG_ION_SHIELDED      4  // shielded from ionospheric anomalies as an FBP / IPC
 #define AREA_FLAG_IS_NOT_PERSISTENT 8  // SSpersistence will not track values from this area.
 #define AREA_FLAG_NO_MODIFY         16 // turf in this area cannot be dismantled.
+#define AREA_FLAG_HIDE_FROM_HOLOMAP 32 // if we shouldn't be drawn on station holomaps
 
 //Map template flags
 #define TEMPLATE_FLAG_ALLOW_DUPLICATES 1 // Lets multiple copies of the template to be spawned
@@ -180,6 +182,9 @@
 #define AI_RESTOREPOWER_CONNECTED 4
 #define AI_RESTOREPOWER_COMPLETED 5
 
+// AI button defines
+#define AI_BUTTON_PROC_BELONGS_TO_CALLER 1
+#define AI_BUTTON_INPUT_REQUIRES_SELECTION 2
 
 // Values represented as Oxyloss. Can be tweaked, but make sure to use integers only.
 #define AI_POWERUSAGE_LOWPOWER 1
@@ -292,3 +297,17 @@
 #define INIT_MACHINERY_PROCESS_ALL 0x3
 //--
 
+
+// Helper procs for easy HTML browser button creation.
+#define UIBUTTON(key, label, title) "[title ? title + ": " : ""]<a href='?src=\ref[src];[key]=1'>[label]</a>"
+
+#define UI_FONT_GOOD(X) "<font color='55cc55'>[X]</font>"
+#define UI_FONT_BAD(X) "<font color='cc5555'>[X]</font>"
+
+// Whereas ckey is in the global list or not
+#define IS_TRUSTED_PLAYER(ckey) (ckey in GLOB.trusted_players)
+
+//NOTE: INTENT_HOTKEY_* defines are not actual intents!
+//they are here to support hotkeys
+#define INTENT_HOTKEY_LEFT  "left"
+#define INTENT_HOTKEY_RIGHT "right"

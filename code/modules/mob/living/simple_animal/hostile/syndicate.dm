@@ -9,7 +9,7 @@
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "hits"
-	speed = 4
+	movement_cooldown = 4
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -17,8 +17,6 @@
 	can_escape = TRUE
 	a_intent = I_HURT
 	var/corpse = /obj/effect/landmark/corpse/syndicate
-	var/weapon1
-	var/weapon2
 	unsuitable_atmos_damage = 15
 	environment_smash = 1
 	faction = "syndicate"
@@ -28,10 +26,6 @@
 	..(gibbed, deathmessage, show_dead_message)
 	if(corpse)
 		new corpse (src.loc)
-	if(weapon1)
-		new weapon1 (src.loc)
-	if(weapon2)
-		new weapon2 (src.loc)
 	qdel(src)
 	return
 
@@ -41,8 +35,10 @@
 	icon_state = "syndicatemelee"
 	icon_living = "syndicatemelee"
 	natural_weapon = /obj/item/melee/energy/sword/red/activated
-	weapon1 = /obj/item/melee/energy/sword/red/activated
-	weapon2 = /obj/item/shield/energy
+	loot_list = list(
+		/obj/item/melee/energy/sword/red/activated = 1,
+		/obj/item/shield/energy = 1,
+	)
 	status_flags = 0
 
 /mob/living/simple_animal/hostile/syndicate/melee/attackby(var/obj/item/O as obj, var/mob/user as mob)
@@ -60,14 +56,11 @@
 		to_chat(usr, "<span class='warning'>This weapon is ineffective, it does no damage.</span>")
 		visible_message("<span class='warning'>\The [user] gently taps \the [src] with \the [O].</span>")
 
-
 /mob/living/simple_animal/hostile/syndicate/melee/bullet_act(var/obj/item/projectile/Proj)
-	if(!Proj)	return
-	if(prob(65))
-		src.health -= Proj.damage
-	else
+	if(prob(35))
 		visible_message("<span class='danger'>\The [src] blocks \the [Proj] with its shield!</span>")
-	return 0
+		return PROJECTILE_FORCE_MISS
+	return ..()
 
 
 /mob/living/simple_animal/hostile/syndicate/melee/space
@@ -78,7 +71,6 @@
 	icon_living = "syndicatemeleespace"
 	name = "Syndicate Commando"
 	corpse = /obj/effect/landmark/corpse/syndicate
-	speed = 0
 
 /mob/living/simple_animal/hostile/syndicate/ranged
 	ranged = 1
@@ -86,10 +78,11 @@
 	icon_state = "syndicateranged"
 	icon_living = "syndicateranged"
 	casingtype = /obj/item/ammo_casing/pistol
-	projectilesound = 'sound/weapons/gunshot/gunshot_smg.ogg'
+	projectilesound = 'sound/weapons/gunshot/smg.ogg'
 	projectiletype = /obj/item/projectile/bullet/pistol
-
-	weapon1 = /obj/item/gun/projectile/automatic/merc_smg
+	loot_list = list(
+		/obj/item/gun/projectile/automatic/merc_smg = 1,
+	)
 
 /mob/living/simple_animal/hostile/syndicate/ranged/space
 	icon_state = "syndicaterangedpsace"
@@ -99,7 +92,6 @@
 	max_gas = null
 	minbodytemp = 0
 	corpse = /obj/effect/landmark/corpse/syndicate/commando
-	speed = 0
 
 /mob/living/simple_animal/hostile/viscerator
 	name = "viscerator"
@@ -122,6 +114,7 @@
 	bone_amount =   0
 	skin_material = null
 	skin_amount =   0
+
 /obj/item/natural_weapon/rotating_blade
 	name = "rotating blades"
 	attack_verb = list("sliced", "cut")

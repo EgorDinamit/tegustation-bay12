@@ -31,7 +31,6 @@
 		/datum/species/vox     = list(
 			/datum/mil_branch/expeditionary_corps,
 			/datum/mil_branch/fleet,
-			/datum/mil_branch/civilian,
 			/datum/mil_branch/solgov,
 			/datum/mil_branch/skrell_fleet
 		)
@@ -40,11 +39,11 @@
 	species_to_branch_whitelist = list(
 		/datum/species/diona        = list(/datum/mil_branch/civilian),
 		/datum/species/nabber       = list(/datum/mil_branch/civilian),
-		/datum/species/skrell       = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps, /datum/mil_branch/skrell_fleet),
-		/datum/species/unathi       = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
-		/datum/species/unathi/yeosa = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
+		/datum/species/skrell       = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps, /datum/mil_branch/skrell_fleet, /datum/mil_branch/solgov, /datum/mil_branch/fleet),
+		/datum/species/unathi       = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps, /datum/mil_branch/solgov, /datum/mil_branch/fleet),
+		/datum/species/unathi/yeosa = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps, /datum/mil_branch/solgov, /datum/mil_branch/fleet),
 		/datum/species/adherent     = list(/datum/mil_branch/civilian),
-		/datum/species/vox          = list(/datum/mil_branch/alien)
+		/datum/species/vox          = list(/datum/mil_branch/alien, /datum/mil_branch/civilian)
 	)
 
 	species_to_rank_blacklist = list(
@@ -61,7 +60,8 @@
 				/datum/mil_rank/ec/e3,
 				/datum/mil_rank/ec/e5,
 				/datum/mil_rank/ec/e7,
-				/datum/mil_rank/ec/o1
+				/datum/mil_rank/ec/o1,
+				/datum/mil_rank/ec/o3
 			),
 			/datum/mil_branch/fleet = list(
 				/datum/mil_rank/fleet/e1,
@@ -71,7 +71,10 @@
 				/datum/mil_rank/fleet/e5,
 				/datum/mil_rank/fleet/e6,
 				/datum/mil_rank/fleet/e7,
-				/datum/mil_rank/fleet/o1
+				/datum/mil_rank/fleet/o1,
+				/datum/mil_rank/fleet/o2,
+				/datum/mil_rank/fleet/o3,
+				/datum/mil_rank/fleet/o4,
 			)
 		),
 		/datum/species/skrell = list(
@@ -79,24 +82,73 @@
 				/datum/mil_rank/ec/e3,
 				/datum/mil_rank/ec/e5,
 				/datum/mil_rank/ec/e7,
-				/datum/mil_rank/ec/o1
+				/datum/mil_rank/ec/o1,
+				/datum/mil_rank/ec/o3
+			),
+				/datum/mil_branch/fleet = list(
+				/datum/mil_rank/fleet/e1,
+				/datum/mil_rank/fleet/e2,
+				/datum/mil_rank/fleet/e3,
+				/datum/mil_rank/fleet/e4,
+				/datum/mil_rank/fleet/e5,
+				/datum/mil_rank/fleet/e6,
+				/datum/mil_rank/fleet/e7,
+				/datum/mil_rank/fleet/o1,
+				/datum/mil_rank/fleet/o2,
+				/datum/mil_rank/fleet/o3,
+				/datum/mil_rank/fleet/o4,
 			)
 		),
 		/datum/species/unathi = list(
 			/datum/mil_branch/expeditionary_corps = list(
 				/datum/mil_rank/ec/e3,
-				/datum/mil_rank/ec/e5
+				/datum/mil_rank/ec/e5,
+				/datum/mil_rank/ec/e7,
+				/datum/mil_rank/ec/o1,
+				/datum/mil_rank/ec/o3
+			),
+				/datum/mil_branch/fleet = list(
+				/datum/mil_rank/fleet/e1,
+				/datum/mil_rank/fleet/e2,
+				/datum/mil_rank/fleet/e3,
+				/datum/mil_rank/fleet/e4,
+				/datum/mil_rank/fleet/e5,
+				/datum/mil_rank/fleet/e6,
+				/datum/mil_rank/fleet/e7,
+				/datum/mil_rank/fleet/o1,
+				/datum/mil_rank/fleet/o2,
+				/datum/mil_rank/fleet/o3,
+				/datum/mil_rank/fleet/o4,
 			)
 		),
 		/datum/species/unathi/yeosa = list(
 			/datum/mil_branch/expeditionary_corps = list(
 				/datum/mil_rank/ec/e3,
-				/datum/mil_rank/ec/e5
+				/datum/mil_rank/ec/e5,
+				/datum/mil_rank/ec/e7,
+				/datum/mil_rank/ec/o1,
+				/datum/mil_rank/ec/o3
+			),
+				/datum/mil_branch/fleet = list(
+				/datum/mil_rank/fleet/e1,
+				/datum/mil_rank/fleet/e2,
+				/datum/mil_rank/fleet/e3,
+				/datum/mil_rank/fleet/e4,
+				/datum/mil_rank/fleet/e5,
+				/datum/mil_rank/fleet/e6,
+				/datum/mil_rank/fleet/e7,
+				/datum/mil_rank/fleet/o1,
+				/datum/mil_rank/fleet/o2,
+				/datum/mil_rank/fleet/o3,
+				/datum/mil_rank/fleet/o4,
 			)
 		),
 		/datum/species/vox = list(
 			/datum/mil_branch/alien = list(
 				/datum/mil_rank/alien
+			),
+			/datum/mil_branch/civilian = list(
+				/datum/mil_rank/civ/contractor
 			)
 		)
 	)
@@ -223,7 +275,7 @@
 	)
 
 	assistant_job = /datum/job/crew
-	min_skill = list(	SKILL_HAULING = SKILL_ADEPT,
+	min_skill = list(	SKILL_HAULING = SKILL_TRAINED,
 	                    SKILL_WEAPONS = SKILL_BASIC,
 	                    SKILL_COMBAT  = SKILL_BASIC)
 
@@ -236,12 +288,14 @@
 	rank_types = list(
 		/datum/mil_rank/civ/civ,
 		/datum/mil_rank/civ/contractor,
+		/datum/mil_rank/civ/foundationadvisor,
 		/datum/mil_rank/civ/synthetic
 	)
 
 	spawn_rank_types = list(
 		/datum/mil_rank/civ/civ,
 		/datum/mil_rank/civ/contractor,
+		/datum/mil_rank/civ/foundationadvisor,
 		/datum/mil_rank/civ/synthetic
 	)
 
@@ -263,9 +317,9 @@
 	)
 
 /datum/mil_branch/terran
-	name = "Independent Navy"
-	name_short = "ICCGN"
-	email_domain = "gilgamesh.navy.mil"
+	name = "Terran Navy"
+	name_short = "TGN"
+	email_domain = "terragov.navy.mil"
 
 	rank_types = list(
 		/datum/mil_rank/terran/e1,
@@ -274,7 +328,6 @@
 		/datum/mil_rank/terran/e6,
 		/datum/mil_rank/terran/e7,
 		/datum/mil_rank/terran/e9,
-		/datum/mil_rank/terran/e9_alt1,
 		/datum/mil_rank/terran/o1,
 		/datum/mil_rank/terran/o2,
 		/datum/mil_rank/terran/o3,
@@ -658,6 +711,10 @@
 /datum/mil_rank/civ/contractor
 	name = "Contractor"
 
+/datum/mil_rank/civ/foundationadvisor
+	name = "Foundation Advisor"
+	name_short = "FADV"
+
 /datum/mil_rank/civ/synthetic
 	name = "Synthetic"
 
@@ -686,45 +743,39 @@
  */
 
 /datum/mil_rank/terran/e1
-	name = "Sailor Recruit"
-	name_short = "SlrRct"
+	name = "Crewman Recruit"
+	name_short = "CR"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted)
 	sort_order = 1
 
 /datum/mil_rank/terran/e3
-	name = "Sailor"
-	name_short = "Slr"
+	name = "Crewman"
+	name_short = "C"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted/e3)
 	sort_order = 3
 
 /datum/mil_rank/terran/e4
-	name = "Bosman"
-	name_short = "Bsn"
+	name = "Petty Officer Second Class"
+	name_short = "POSC"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted/e4)
 	sort_order = 4
 
 /datum/mil_rank/terran/e6
-	name = "Starszy Bosman"
-	name_short = "SBsn"
+	name = "Petty Officer First Class"
+	name_short = "POFC"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted/e6)
 	sort_order = 6
 
 /datum/mil_rank/terran/e7
-	name = "Glavny Starshina"
-	name_short = "GStr"
+	name = "Chief Petty Officer"
+	name_short = "CPO"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted/e7)
 	sort_order = 7
 
 /datum/mil_rank/terran/e9
-	name = "Michman"
-	name_short = "Mch"
+	name = "Senior Chief Petty Officer"
+	name_short = "SCPO"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted/e9)
-	sort_order = 9
-
-/datum/mil_rank/terran/e9_alt1
-	name = "Michman of the Independent Navy"
-	name_short = "MchNvy"
-	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/enlisted/e9_alt1)
 	sort_order = 9
 
 /datum/mil_rank/terran/o1
@@ -734,56 +785,56 @@
 	sort_order = 11
 
 /datum/mil_rank/terran/o2
-	name = "Leytenant"
-	name_short = "Lyt"
+	name = "Lieutenant"
+	name_short = "LT"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/officer/o2)
 	sort_order = 12
 
 /datum/mil_rank/terran/o3
-	name = "Starshy Leytenant"
-	name_short = "SLyt"
+	name = "Senior Lieutenant"
+	name_short = "SLT"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/officer/o3)
 	sort_order = 13
 
 /datum/mil_rank/terran/o4
-	name = "Corvette-Komandor"
-	name_short = "CvtKdr"
+	name = "Corvette Commander"
+	name_short = "CRVC"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/officer/o4)
 	sort_order = 14
 
 /datum/mil_rank/terran/o5
-	name = "Komandor"
-	name_short = "Kdr"
+	name = "Commander"
+	name_short = "CMD"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/officer/o5)
 	sort_order = 15
 
 /datum/mil_rank/terran/o6
-	name = "Kapitan"
-	name_short = "Kpt"
+	name = "Captain"
+	name_short = "CPT"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/officer/o6)
 	sort_order = 16
 
 /datum/mil_rank/terran/o7
-	name = "Kontradmiral"
-	name_short = "KtrAdm"
+	name = "Rear Admiral"
+	name_short = "RADM"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/flag)
 	sort_order = 17
 
 /datum/mil_rank/terran/o8
-	name = "Wiceadmiral"
-	name_short = "WcAdm"
+	name = "Vice Admiral"
+	name_short = "VADM"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/flag/o8)
 	sort_order = 18
 
 /datum/mil_rank/terran/o9
 	name = "Admiral"
-	name_short = "Adm"
+	name_short = "ADM"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/flag/o9)
 	sort_order = 19
 
 /datum/mil_rank/terran/o10
-	name = "Admiral of the Independent Navy"
-	name_short = "AdmNvy"
+	name = "Master Admiral of Humanity"
+	name_short = "MADM"
 	accessory = list(/obj/item/clothing/accessory/terran/rank/navy/flag/o10)
 	sort_order = 20
 

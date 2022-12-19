@@ -135,7 +135,7 @@ GLOBAL_LIST_INIT(surgery_tool_exception_cache, new)
 	for(var/skill in skill_reqs)
 		var/penalty = delicate ? 40 : 20
 		. -= max(0, penalty * (skill_reqs[skill] - user.get_skill_value(skill)))
-		if(user.skill_check(skill, SKILL_PROF))
+		if(user.skill_check(skill, SKILL_MASTER))
 			. += 20
 
 	if(ishuman(user))
@@ -228,8 +228,11 @@ GLOBAL_LIST_INIT(surgery_tool_exception_cache, new)
 				var/skill_reqs = S.get_skill_reqs(user, M, src, zone)
 				var/duration = user.skill_delay_mult(skill_reqs[1]) * rand(S.min_duration, S.max_duration)
 				if(prob(S.success_chance(user, M, src, zone)) && do_after(user, duration, M))
-					S.end_step(user, M, zone, src)
-					handle_post_surgery()
+					if (S.can_use(user, M, zone, src))
+						S.end_step(user, M, zone, src)
+						handle_post_surgery()
+					else
+						to_chat(user, SPAN_WARNING("The patient lost the target organ before you could finish operating!"))
 				else if ((src in user.contents) && user.Adjacent(M))
 					S.fail_step(user, M, zone, src)
 				else

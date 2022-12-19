@@ -16,7 +16,7 @@
 
 	// poison_per_bite = 5
 
-	movement_cooldown = 0 // Hunters are FAST.
+	movement_cooldown = 2 // Hunters are FAST.
 
 	ai_holder_type = /datum/ai_holder/simple_animal/melee
 
@@ -37,6 +37,12 @@
 			return damage_amount * 1.5
 	return ..()
 
+
+/mob/living/simple_animal/hostile/giant_spider/hunter/can_special_attack(atom/A)
+	. = ..()
+	if(.)
+		return check_solid_ground()
+	return FALSE
 
 // The actual leaping attack.
 /mob/living/simple_animal/hostile/giant_spider/hunter/do_special_attack(atom/A)

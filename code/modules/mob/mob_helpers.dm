@@ -98,31 +98,31 @@ proc/getsensorlevel(A)
 
 //The base miss chance for the different defence zones
 var/list/global/base_miss_chance = list(
-	BP_HEAD = 70,
-	BP_CHEST = 10,
-	BP_GROIN = 20,
-	BP_L_LEG = 60,
-	BP_R_LEG = 60,
-	BP_L_ARM = 30,
-	BP_R_ARM = 30,
-	BP_L_HAND = 50,
-	BP_R_HAND = 50,
-	BP_L_FOOT = 70,
-	BP_R_FOOT = 70,
+	BP_HEAD =   50,
+	BP_CHEST =  10,
+	BP_GROIN =  15,
+	BP_L_ARM =  20,
+	BP_R_ARM =  20,
+	BP_L_HAND = 35,
+	BP_R_HAND = 35,
+	BP_L_LEG =  20,
+	BP_R_LEG =  20,
+	BP_L_FOOT = 35,
+	BP_R_FOOT = 35,
 )
 
 //Used to weight organs when an organ is hit randomly (i.e. not a directed, aimed attack).
 //Also used to weight the protection value that armour provides for covering that body part when calculating protection from full-body effects.
 var/list/global/organ_rel_size = list(
-	BP_HEAD = 25,
-	BP_CHEST = 70,
-	BP_GROIN = 30,
-	BP_L_LEG = 25,
-	BP_R_LEG = 25,
-	BP_L_ARM = 25,
-	BP_R_ARM = 25,
+	BP_HEAD =   25,
+	BP_CHEST =  70,
+	BP_GROIN =  30,
+	BP_L_ARM =  25,
+	BP_R_ARM =  25,
 	BP_L_HAND = 10,
 	BP_R_HAND = 10,
+	BP_L_LEG =  25,
+	BP_R_LEG =  25,
 	BP_L_FOOT = 10,
 	BP_R_FOOT = 10,
 )
@@ -182,18 +182,16 @@ var/list/global/organ_rel_size = list(
 				return zone
 
 	var/miss_chance = 10
-	var/scatter_chance
-	if (zone in base_miss_chance)
+	if(zone in base_miss_chance)
 		miss_chance = base_miss_chance[zone]
 	miss_chance = max(miss_chance + miss_chance_mod, 0)
-	scatter_chance = min(95, miss_chance + 60)
 	if(prob(miss_chance))
-		if(ranged_attack && prob(scatter_chance))
-			return null
-		else if(prob(70))
-			return null
-		return (ran_zone())
-	return zone
+		return null
+	else
+		if(prob(miss_chance))
+			return (ran_zone())
+		else
+			return zone
 
 //Replaces some of the characters with *, used in whispers. pr = probability of no star.
 //Will try to preserve HTML formatting. re_encode controls whether the returned text is HTML encoded outside tags.
@@ -388,7 +386,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			else			return I_HURT
 
 //change a mob's act-intent. Input the intent as a string such as "help" or use "right"/"left
-/mob/verb/a_intent_change(input as text)
+/mob/proc/a_intent_change(input)
 	set name = "a-intent"
 	set hidden = 1
 
@@ -643,11 +641,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		return 0
 	if(BP_IS_ROBOTIC(L))
 		return 0//Robotic hearts don't get jittery.
-	if(src.jitteriness >= 400 && prob(5)) //Kills people if they have high jitters.
-		if(prob(1))
-			L.take_internal_damage(L.max_damage / 2, 0)
-			to_chat(src, "<span class='danger'>Something explodes in your heart.</span>")
-			admin_victim_log(src, "has taken <b>lethal heart damage</b> at jitteriness level [src.jitteriness].")
+	if(jitteriness >= 400 && prob(5)) //Kills people if they have high jitters.
+		if(jitteriness >= 650)
+			L.take_internal_damage(5, 0)
+			to_chat(src, "<span class='danger'>It feels as if your heart is about to explode!</span>")
+			admin_victim_log(src, "has taken <b>moderate heart damage</b> at jitteriness level [src.jitteriness].")
 		else
 			L.take_internal_damage(1, 0)
 			to_chat(src, "<span class='danger'>The jitters are killing you! You feel your heart beating out of your chest.</span>")

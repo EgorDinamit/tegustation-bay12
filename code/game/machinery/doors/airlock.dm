@@ -22,6 +22,7 @@ var/list/airlock_overlays = list()
 	icon_state = "preview"
 	power_channel = ENVIRON
 	interact_offline = FALSE
+	animation_time = 5
 
 	explosion_resistance = 10
 	var/aiControlDisabled = 0 //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
@@ -52,7 +53,7 @@ var/list/airlock_overlays = list()
 
 	var/open_sound_powered = 'sound/machines/airlock_open.ogg'
 	var/open_sound_unpowered = 'sound/machines/airlock_open_force.ogg'
-	var/open_failure_access_denied = 'sound/machines/buzz-two.ogg'
+	var/open_failure_access_denied = 'sound/machines/deniedboop.ogg'
 
 	var/close_sound_powered = 'sound/machines/airlock_close.ogg'
 	var/close_sound_unpowered = 'sound/machines/airlock_close_force.ogg'
@@ -454,7 +455,7 @@ About the new airlock wires panel:
 			if(istype(C) && C.hallucination_power > 25)
 				to_chat(user, "<span class='danger'>You feel a powerful shock course through your body!</span>")
 				user.adjustHalLoss(20)
-				user.Stun(5)
+				user.Weaken(5)
 				return
 	..(user)
 
@@ -767,9 +768,7 @@ About the new airlock wires panel:
 			set_airlock_overlays(AIRLOCK_DENY)
 			if(density && arePowerSystemsOn())
 				flick("deny", src)
-				if(secured_wires && world.time > next_clicksound)
-					next_clicksound = world.time + CLICKSOUND_INTERVAL
-					playsound(loc, open_failure_access_denied, 50, 0)
+				playsound(loc, open_failure_access_denied, 100, 0)
 			update_icon(AIRLOCK_CLOSED)
 		if("emag")
 			set_airlock_overlays(AIRLOCK_EMAG)
@@ -1030,7 +1029,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/attackby(var/obj/item/C, var/mob/user)
 	// Brace is considered installed on the airlock, so interacting with it is protected from electrification.
-	if(brace && (istype(C.GetIdCard(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
+	if(brace && C && (istype(C.GetIdCard(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
 		return brace.attackby(C, user)
 
 	if(!brace && istype(C, /obj/item/airlock_brace))
@@ -1280,6 +1279,10 @@ About the new airlock wires panel:
 
 	for(var/turf/turf in locs)
 		for(var/atom/movable/AM in turf)
+			if(istype(AM, /obj/))
+				var/obj/O = AM
+				if(O.hides_under_flooring()) // Don't damage pipes, cables, and so on.
+					continue
 			if(AM.airlock_crush(door_crush_damage))
 				take_damage(door_crush_damage)
 				use_power_oneoff(door_crush_damage * 100)		// Uses bunch extra power for crushing the target.

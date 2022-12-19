@@ -58,7 +58,7 @@
 	GLOB.silicon_mob_list -= src
 	QDEL_NULL(silicon_radio)
 	QDEL_NULL(silicon_camera)
-	for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
+	for(var/datum/alarm_handler/AH as anything in SSalarm.handlers)
 		AH.unregister_alarm(src)
 	return ..()
 
@@ -80,11 +80,16 @@
 	return
 
 /mob/living/silicon/emp_act(severity)
+	if(status_flags & GODMODE)
+		return
+
 	switch(severity)
 		if(1)
 			take_organ_damage(0, 16, ORGAN_DAMAGE_SILICON_EMP)
-			if(prob(50)) Stun(rand(5,10))
-			else confused = (min(confused + 2, 40))
+			if(prob(50))
+				Stun(rand(5,10))
+			else
+				confused = (min(confused + 2, 40))
 		if(2)
 			take_organ_damage(0, 7, ORGAN_DAMAGE_SILICON_EMP)
 			confused = (min(confused + 2, 30))
@@ -119,6 +124,8 @@
 	return 1
 
 /mob/living/silicon/bullet_act(var/obj/item/projectile/Proj)
+	if(status_flags & GODMODE)
+		return PROJECTILE_FORCE_MISS
 
 	if(!Proj.nodamage)
 		switch(Proj.damage_type)
@@ -254,6 +261,9 @@
 	return 1
 
 /mob/living/silicon/ex_act(severity)
+	if(status_flags & GODMODE)
+		return
+
 	if(!blinded)
 		flash_eyes()
 

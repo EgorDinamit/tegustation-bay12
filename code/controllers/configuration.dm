@@ -2,13 +2,15 @@ var/list/gamemode_cache = list()
 
 /datum/configuration
 	var/server_name = null				// server name (for world name / status)
-	var/server_suffix = 0				// generate numeric suffix based on server port
+	var/server_desc = null				// message to appear on the hub below server name, if set
+	var/server_suffix = null			// message to appear right after server's name
 	var/game_version = "Baystation12" //for topic status requests
 
 	var/log_ooc = 0						// log OOC channel
 	var/log_access = 0					// log login/logout
 	var/log_say = 0						// log client say
 	var/log_admin = 0					// log admin actions
+	var/log_mentor = 0                  // log mentor actions
 	var/log_debug = 1					// log debug output
 	var/log_game = 0					// log game events
 	var/log_vote = 0					// log voting
@@ -19,7 +21,9 @@ var/list/gamemode_cache = list()
 	var/log_adminwarn = 0				// log warnings admins get about bomb construction and such
 	var/log_hrefs = 0					// logs all links clicked in-game. Could be used for debugging and tracking down exploits
 	var/log_runtime = 0					// logs world.log to a file
+	var/log_sql = 0						// logs SQL queries
 	var/log_world_output = 0			// log world.log to game log
+	var/enable_memos = 1				// enables memos
 	var/allow_admin_ooccolor = 0		// Allows admins with relevant permissions to have their own ooc colour
 	var/allow_vote_restart = 0 			// allow votes to restart
 	var/ert_admin_call_only = 0
@@ -49,6 +53,7 @@ var/list/gamemode_cache = list()
 	var/list/votable_modes = list()		// votable modes
 	var/list/probabilities = list()		// relative probability of each mode
 	var/secret_hide_possibilities = FALSE // Whether or not secret modes show list of possible round types
+	var/secret_disabled = FALSE // Whether or not secret - a hidden random pick from available modes - can be voted for
 	var/allow_random_events = 0			// enables random events mid-round when set to 1
 	var/hostedby = null
 	var/respawn_delay = 30 //An observer must wait this many minutes before being able to return to the main menu
@@ -58,6 +63,9 @@ var/list/gamemode_cache = list()
 	var/kick_inactive = 0				//force disconnect for inactive players after this many minutes, if non-0
 	var/jobs_have_minimal_access = 0	//determines whether jobs use minimal access or expanded access.
 	var/minimum_player_age = 0
+
+	var/lowpop_access = 0				//should the players get additional access if population is too low?
+	var/lowpop_access_amount = 6		//the amount of players should be below it to grant lowpop access
 
 	var/cult_ghostwriter = 1               //Allows ghosts to write in blood in cult rounds...
 	var/cult_ghostwriter_req_cultists = 10 //...so long as this many cultists are active.
@@ -83,6 +91,7 @@ var/list/gamemode_cache = list()
 	var/banappeals
 	var/wikiurl
 	var/forumurl
+	var/discordurl
 	var/githuburl
 	var/issuereporturl
 
@@ -112,6 +121,8 @@ var/list/gamemode_cache = list()
 
 	var/use_loyalty_implants = 0
 
+	var/allow_diagonal_movement = FALSE
+
 	var/welder_vision = 1
 	var/generate_map = 0
 	var/no_click_cooldown = 0
@@ -125,12 +136,14 @@ var/list/gamemode_cache = list()
 	var/skill_sprint_cost_range = 0.8
 	var/minimum_stamina_recovery = 1
 	var/maximum_stamina_recovery = 3
+	var/glide_size_delay = 1
 
 	//Mob specific modifiers. NOTE: These will affect different mob types in different ways
 	var/maximum_mushrooms = 15 //After this amount alive, mushrooms will not boom boom
 
 	var/admin_legacy_system = 0	//Defines whether the server uses the legacy admin system with admins.txt or the SQL system. Config option in config.txt
 	var/ban_legacy_system = 0	//Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt
+	var/use_job_whitelists = 0 //Do jobs use a whitelist? Config option in config.txt
 	var/use_age_restriction_for_jobs = 0   //Do jobs use account age restrictions?   --requires database
 	var/use_age_restriction_for_antags = 0 //Do antags use account age restrictions? --requires database
 
@@ -154,16 +167,13 @@ var/list/gamemode_cache = list()
 	var/announce_evac_to_irc = FALSE
 
 	// Event settings
-	var/expected_round_length = 3 * 60 * 60 * 10 // 3 hours
-	// If the first delay has a custom start time
-	// No custom time, no custom time, between 80 to 100 minutes respectively.
-	var/list/event_first_run   = list(EVENT_LEVEL_MUNDANE = null, 	EVENT_LEVEL_MODERATE = null,	EVENT_LEVEL_MAJOR = list("lower" = 48000, "upper" = 60000))
-	// The lowest delay until next event
-	// 10, 30, 50 minutes respectively
-	var/list/event_delay_lower = list(EVENT_LEVEL_MUNDANE = 6000,	EVENT_LEVEL_MODERATE = 18000,	EVENT_LEVEL_MAJOR = 30000)
-	// The upper delay until next event
-	// 15, 45, 70 minutes respectively
-	var/list/event_delay_upper = list(EVENT_LEVEL_MUNDANE = 9000,	EVENT_LEVEL_MODERATE = 27000,	EVENT_LEVEL_MAJOR = 42000)
+	var/expected_round_length = 3 HOURS
+	/// If the first delay has a custom start time
+	var/static/list/event_first_run = list(EVENT_LEVEL_MUNDANE = null, EVENT_LEVEL_MODERATE = null, EVENT_LEVEL_MAJOR = list("lower" = 80 MINUTES, "upper" = 100 MINUTES), EVENT_LEVEL_EXO = list("lower" = 50 MINUTES, "upper" = 80 MINUTES))
+	/// The lowest delay until next event
+	var/static/list/event_delay_lower = list(EVENT_LEVEL_MUNDANE = 10 MINUTES, EVENT_LEVEL_MODERATE = 30 MINUTES, EVENT_LEVEL_MAJOR = 50 MINUTES, EVENT_LEVEL_EXO = 40 MINUTES)
+	/// The upper delay until next event
+	var/static/list/event_delay_upper = list(EVENT_LEVEL_MUNDANE = 15 MINUTES, EVENT_LEVEL_MODERATE = 45 MINUTES, EVENT_LEVEL_MAJOR = 70 MINUTES, EVENT_LEVEL_EXO = 60 MINUTES)
 
 	var/abandon_allowed = 1
 	var/ooc_allowed = 1
@@ -199,6 +209,8 @@ var/list/gamemode_cache = list()
 	var/error_silence_time = 6000 // How long a unique error will be silenced for
 	var/error_msg_delay = 50 // How long to wait between messaging admins about occurrences of a unique error
 
+	var/sleep_offline_after_init = FALSE
+
 	var/max_gear_cost = 10 // Used in chargen for accessory loadout limit. 0 disables loadout, negative allows infinite points.
 
 	var/allow_ic_printing = TRUE //Whether players should be allowed to print IC circuits from scripts.
@@ -215,6 +227,9 @@ var/list/gamemode_cache = list()
 	var/motd = ""
 	var/event = ""
 
+	/// The delay in deciseconds between stat() updates.
+	var/stat_delay = 5
+
 /datum/configuration/New()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -230,7 +245,6 @@ var/list/gamemode_cache = list()
 				src.probabilities[M.config_tag] = M.probability
 				if (M.votable)
 					src.votable_modes += M.config_tag
-	src.votable_modes += "secret"
 
 /datum/configuration/proc/load(filename, type = "config") //the type can also be game_options, in which case it uses a different switch. not making it separate to not copypaste code - Urist
 	var/list/Lines = file2list(filename)
@@ -268,6 +282,9 @@ var/list/gamemode_cache = list()
 				if ("ban_legacy_system")
 					config.ban_legacy_system = 1
 
+				if ("use_job_whitelists")
+					config.use_job_whitelists = 1
+
 				if ("use_age_restriction_for_jobs")
 					config.use_age_restriction_for_jobs = 1
 
@@ -276,6 +293,12 @@ var/list/gamemode_cache = list()
 
 				if ("jobs_have_minimal_access")
 					config.jobs_have_minimal_access = 1
+
+				if("lowpop_access")
+					config.lowpop_access = 1
+
+				if("lowpop_access_amount")
+					config.lowpop_access_amount = text2num(value)
 
 				if ("use_recursive_explosions")
 					use_recursive_explosions = 1
@@ -294,6 +317,9 @@ var/list/gamemode_cache = list()
 
 				if ("log_admin")
 					config.log_admin = 1
+
+				if ("log_mentor")
+					config.log_mentor = 1
 
 				if ("log_debug")
 					config.log_debug = text2num(value)
@@ -327,6 +353,12 @@ var/list/gamemode_cache = list()
 
 				if ("log_runtime")
 					config.log_runtime = 1
+
+				if ("log_sql")
+					config.log_sql = 1
+
+				if ("enable_memos")
+					config.enable_memos = 1
 
 				if ("generate_asteroid")
 					config.generate_map = 1
@@ -404,8 +436,11 @@ var/list/gamemode_cache = list()
 				if ("servername")
 					config.server_name = value
 
+				if ("serverdesc")
+					config.server_desc = value
+
 				if ("serversuffix")
-					config.server_suffix = 1
+					config.server_suffix = value
 
 				if ("hostedby")
 					config.hostedby = value
@@ -424,6 +459,9 @@ var/list/gamemode_cache = list()
 
 				if ("forumurl")
 					config.forumurl = value
+
+				if ("discordurl")
+					config.discordurl = value
 
 				if ("githuburl")
 					config.githuburl = value
@@ -527,6 +565,9 @@ var/list/gamemode_cache = list()
 
 				if("secret_hide_possibilities")
 					secret_hide_possibilities = TRUE
+
+				if ("secret_disabled")
+					secret_disabled = TRUE
 
 				if("usealienwhitelist")
 					usealienwhitelist = 1
@@ -700,6 +741,9 @@ var/list/gamemode_cache = list()
 				if ("act_interval")
 					config.act_interval = text2num(value) SECONDS
 
+				if ("sleep_offline_after_init")
+					config.sleep_offline_after_init = TRUE
+
 				if ("chat_markup")
 					var/list/line = splittext(value, ";")
 					if (length(line) != 2)
@@ -736,6 +780,9 @@ var/list/gamemode_cache = list()
 
 				if ("game_version")
 					config.game_version = value
+
+				if ("stat_delay")
+					stat_delay = Floor(text2num(value))
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
@@ -777,6 +824,8 @@ var/list/gamemode_cache = list()
 					config.minimum_stamina_recovery = value
 				if("maximum_stamina_recovery")
 					config.maximum_stamina_recovery = value
+				if("glide_size_delay")
+					config.glide_size_delay = value
 
 				if("maximum_mushrooms")
 					config.maximum_mushrooms = value
@@ -784,6 +833,9 @@ var/list/gamemode_cache = list()
 
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
+
+				if("allow_diagonal_movement")
+					config.allow_diagonal_movement = TRUE
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
@@ -863,9 +915,10 @@ var/list/gamemode_cache = list()
 			return M
 
 /datum/configuration/proc/get_runnable_modes()
+	var/list/lobby_players = SSticker.lobby_players()
 	var/list/runnable_modes = list()
 	for(var/game_mode in gamemode_cache)
 		var/datum/game_mode/M = gamemode_cache[game_mode]
-		if(M && !M.startRequirements() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
+		if(M && !M.check_startable(lobby_players) && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
 			runnable_modes[M.config_tag] = config.probabilities[M.config_tag]
 	return runnable_modes

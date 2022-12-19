@@ -39,9 +39,10 @@ Frequency:
 <A href='byond://?src=\ref[src];freq=10'>+</A><BR>
 
 <A href='?src=\ref[src];refresh=1'>Refresh</A>"}
-	show_browser(user, dat, "window=radio")
+	var/datum/browser/popup = new(user, "radio", "Persistent Signal Locator")
+	popup.set_content(dat)
+	popup.open()
 	onclose(user, "radio")
-	return
 
 /obj/item/locator/Topic(href, href_list)
 	..()
@@ -60,24 +61,23 @@ Frequency:
 			if (sr)
 				src.temp += "<B>Located Beacons:</B><BR>"
 
-				for(var/obj/item/device/radio/beacon/W in world)
-					if(!W.functioning)
+				for(var/obj/machinery/tele_beacon/W in world)
+					if(!W.functioning())
 						continue
-					if (W.frequency == src.frequency)
-						var/turf/tr = get_turf(W)
-						if (tr.z == sr.z && tr)
-							var/direct = max(abs(tr.x - sr.x), abs(tr.y - sr.y))
-							if (direct < 5)
-								direct = "very strong"
+					var/turf/tr = get_turf(W)
+					if (tr.z == sr.z && tr)
+						var/direct = max(abs(tr.x - sr.x), abs(tr.y - sr.y))
+						if (direct < 5)
+							direct = "very strong"
+						else
+							if (direct < 10)
+								direct = "strong"
 							else
-								if (direct < 10)
-									direct = "strong"
+								if (direct < 20)
+									direct = "weak"
 								else
-									if (direct < 20)
-										direct = "weak"
-									else
-										direct = "very weak"
-							src.temp += "[W.code]-[dir2text(get_dir(sr, tr))]-[direct]<BR>"
+									direct = "very weak"
+						src.temp += "[W.beacon_name]-[dir2text(get_dir(sr, tr))]-[direct]<BR>"
 
 				src.temp += "<B>Extranneous Signals:</B><BR>"
 				for (var/obj/item/implant/tracking/W in world)

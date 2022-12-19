@@ -132,8 +132,8 @@
 	center_of_mass = null
 	randpixel = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA)
-	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
+	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMBAND, ACCESSORY_SLOT_OVER)
 
-/obj/item/clothing/suit/space/New()
-	..()
+/obj/item/clothing/suit/space/Initialize()
+	. = ..()
 	slowdown_per_slot[slot_wear_suit] = 1

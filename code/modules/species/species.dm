@@ -62,6 +62,7 @@
 	var/thirst_factor = DEFAULT_THIRST_FACTOR // Multiplier for thirst.
 	var/taste_sensitivity = TASTE_NORMAL      // How sensitive the species is to minute tastes.
 	var/silent_steps
+	var/list/special_footstep_sounds = list()
 
 	var/min_age = 17
 	var/max_age = 70
@@ -412,8 +413,22 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		if(FEMALE)
 			t_him = "her"
 
-	H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
-					"<span class='notice'>You hug [target] to make [t_him] feel better!</span>")
+	var/zonefound = FALSE //Used as a hacky default statement, since the cases require extra checks to make sure we aren't interacting with a missing limb
+	if(ishuman(target))
+		var/mob/living/carbon/human/U = target
+		switch(H.zone_sel.selecting)
+			if(BP_R_HAND)
+				if(U.has_organ(BP_R_HAND))
+					H.visible_message(SPAN_NOTICE("\The [H] shakes \the [U]'s hand."), SPAN_NOTICE("You shake \the [U]'s hand."))
+					zonefound = TRUE
+			if(BP_L_HAND)
+				if(U.has_organ(BP_L_HAND))
+					H.visible_message(SPAN_NOTICE("\The [H] shakes \the [U]'s hand."), SPAN_NOTICE("You shake \the [U]'s hand."))
+					zonefound = TRUE
+			//here is where tail entwining will go one day
+
+	if(!zonefound) //If they are not human or we don't have the specified body part, default to hugs
+		H.visible_message(SPAN_NOTICE("[H] hugs [target] to make [t_him] feel better!"), SPAN_NOTICE("You hug [target] to make [t_him] feel better!"))
 
 	if(H != target)
 		H.update_personal_goal(/datum/goal/achievement/givehug, TRUE)
@@ -644,12 +659,12 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			return
 
 	var/randn = rand(1, 100) - skill_mod + state_mod - stim_mod
-	if(!(check_no_slip(target)) && randn <= 20)
+	if(randn <= 20 && !target.species.check_no_slip(target))
 		var/armor_check = 100 * target.get_blocked_ratio(affecting, BRUTE, damage = 20)
-		target.apply_effect(push_mod, WEAKEN, armor_check)
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(armor_check < 100)
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
+			target.apply_effect(push_mod, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return

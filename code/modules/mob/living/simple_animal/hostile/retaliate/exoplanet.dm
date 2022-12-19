@@ -57,7 +57,7 @@
 	move_to_delay = 2
 	maxHealth = 125
 	health = 125
-	speed = 2
+	movement_cooldown = 4
 	natural_weapon = /obj/item/natural_weapon/claws
 	cold_damage_per_tick = 0
 	natural_armor = list(
@@ -83,7 +83,7 @@
 	move_to_delay = 1
 	maxHealth = 25
 	health = 25
-	speed = 1
+	movement_cooldown = 3
 	natural_weapon = /obj/item/natural_weapon/claws/weak
 	cold_damage_per_tick = 0
 	mob_size = MOB_SMALL
@@ -101,7 +101,7 @@
 	move_to_delay = 1
 	maxHealth = 75
 	health = 75
-	speed = 1
+	movement_cooldown = 4
 	natural_weapon = /obj/item/natural_weapon/claws
 	cold_damage_per_tick = 0
 
@@ -158,13 +158,13 @@
 	move_to_delay = 3
 	maxHealth = 150
 	health = 150
-	speed = 1
+	movement_cooldown = 4
 	natural_weapon = /obj/item/natural_weapon/pincers
 	natural_armor = list(
 		melee = ARMOR_MELEE_RESISTANT
 		)
 
-	ai_holder_type = /datum/ai_holder/simple_animal/royalcrab
+	ai_holder_type = /datum/ai_holder/simple_animal/retaliate/royalcrab
 	say_list = /datum/say_list/royalcrab
 
 /mob/living/simple_animal/hostile/retaliate/beast/charbaby
@@ -177,7 +177,7 @@
 	health = 45
 	maxHealth = 45
 	natural_weapon = /obj/item/natural_weapon/charbaby
-	speed = 2
+	movement_cooldown = 5
 	response_help =  "pats briefly"
 	response_disarm = "gently pushes"
 	response_harm = "strikes"
@@ -218,26 +218,6 @@
 
 	say_list_type = /datum/say_list/shantak/lava
 
-//Mob AI's
-
-// /datum/ai_holder/simple_animal/retaliate/beast/list_targets()
-// 	. = ..()
-
-// 	var/mob/living/simple_animal/hostile/retaliate/beast/B = holder
-// 	var/list/see = ..()
-// 	if(see.len)
-// 		return see
-// 	if(B.prey.len)
-// 		. = list()
-// 		for(var/weakref/W in B.prey)
-// 			var/mob/M = W.resolve()
-// 			if(M)
-// 				. += M
-// 		return
-// 	if(B.hunger > 500) //time to look for some food
-// 		hostile = TRUE
-
-
 /* AI */
 
 /datum/ai_holder/simple_animal/diyaab/post_melee_attack(atom/A)
@@ -258,7 +238,7 @@
 /datum/ai_holder/simple_animal/passive/thinbug
 	speak_chance = 1
 
-/datum/ai_holder/simple_animal/royalcrab
+/datum/ai_holder/simple_animal/retaliate/royalcrab
 	speak_chance = 1
 
 /* Say Lists */

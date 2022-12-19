@@ -114,6 +114,7 @@ What is the naming convention for planes or layers?
 	#define TABLE_LAYER                 2.21
 	#define BELOW_OBJ_LAYER             2.22
 	#define STRUCTURE_LAYER             2.23
+	#define ABOVE_STRUCTURE_LAYER       2.24
 	// OBJ_LAYER                        3
 	#define ABOVE_OBJ_LAYER             3.01
 	#define CLOSED_DOOR_LAYER           3.02
@@ -121,6 +122,7 @@ What is the naming convention for planes or layers?
 	#define SIDE_WINDOW_LAYER           3.04
 	#define FULL_WINDOW_LAYER           3.05
 	#define ABOVE_WINDOW_LAYER          3.06
+	#define HOLOMAP_OVERLAY_LAYER       3.061
 	//LYING MOB AND HUMAN
 	#define LYING_MOB_LAYER             3.07
 	#define LYING_HUMAN_LAYER           3.08
@@ -159,7 +161,6 @@ What is the naming convention for planes or layers?
 	//OBSERVER
 	#define OBSERVER_LAYER              5.1
 
-	#define OBFUSCATION_LAYER           5.2
 	#define BASE_AREA_LAYER             999
 
 #define OBSERVER_PLANE             1
@@ -173,6 +174,7 @@ What is the naming convention for planes or layers?
 	#define EYE_GLOW_LAYER         1
 	#define BEAM_PROJECTILE_LAYER  2
 	#define SUPERMATTER_WALL_LAYER 3
+	#define OBFUSCATION_LAYER      4
 
 #define FULLSCREEN_PLANE                4 // for fullscreen overlays that do not cover the hud.
 
@@ -184,10 +186,13 @@ What is the naming convention for planes or layers?
 
 #define HUD_PLANE                    5
 	#define UNDER_HUD_LAYER              0
-	#define HUD_BASE_LAYER               2
+	#define HUD_BASE_LAYER               1
+	#define HUD_CLICKABLE_LAYER          2
 	#define HUD_ITEM_LAYER               3
 	#define HUD_ABOVE_ITEM_LAYER         4
 
+#define ABOVE_HUD_PLANE                    6
+	#define ABOVE_HUD_LAYER              0
 
 //This is difference between planes used for atoms and effects
 #define PLANE_DIFFERENCE              3

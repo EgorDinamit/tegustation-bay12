@@ -43,6 +43,10 @@ datum/preferences
 		client = C
 		client_ckey = C.ckey
 		SScharacter_setup.preferences_datums[C.ckey] = src
+
+		// give them default keybinds too
+		key_bindings = deepCopyList(global.hotkey_keybinding_list_by_key)
+
 		if(SScharacter_setup.initialized)
 			setup()
 		else
@@ -199,6 +203,9 @@ datum/preferences
 		load_character(text2num(href_list["changeslot"]))
 		sanitize_preferences()
 		close_load_dialog(usr)
+
+		if (winget(usr, "preferences_browser", "is-visible") == "true")
+			open_setup_window(usr)
 
 		if (istype(client.mob, /mob/new_player))
 			var/mob/new_player/M = client.mob

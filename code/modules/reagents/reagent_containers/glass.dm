@@ -51,11 +51,11 @@
 		return
 
 	if(reagents && reagents.reagent_list.len)
-		to_chat(user, "<span class='notice'>It contains [reagents.total_volume] units of liquid.</span>")
+		to_chat(user, SPAN_NOTICE("It contains [reagents.total_volume] units of liquid."))
 	else
-		to_chat(user, "<span class='notice'>It is empty.</span>")
+		to_chat(user, SPAN_NOTICE("It is empty."))
 	if(!is_open_container())
-		to_chat(user, "<span class='notice'>The airtight lid seals it completely.</span>")
+		to_chat(user, SPAN_NOTICE("The airtight lid seals it completely."))
 
 /obj/item/reagent_containers/glass/attack_self()
 	..()
@@ -253,13 +253,13 @@
 /obj/item/reagent_containers/glass/beaker/cryoxadone
 	New()
 		..()
-		reagents.add_reagent(/datum/reagent/cryoxadone, 30)
+		reagents.add_reagent(/datum/reagent/medicine/cryogenic/cryoxadone, 30)
 		update_icon()
 
 /obj/item/reagent_containers/glass/beaker/sulphuric
 	New()
 		..()
-		reagents.add_reagent(/datum/reagent/acid, 60)
+		reagents.add_reagent(/datum/reagent/acid/sulphuric, 60)
 		update_icon()
 
 /obj/item/reagent_containers/glass/bucket
